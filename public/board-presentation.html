@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kestrel Pickleball Balls | Amazon Launch Strategy | Board Presentation</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<style>
+  :root {
+    --brand-primary: #1a3a5c;
+    --brand-accent: #2d8cf0;
+    --brand-green: #22c55e;
+    --brand-orange: #f59e0b;
+    --brand-red: #ef4444;
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-alt: #253347;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #334155;
+    --gradient-blue: linear-gradient(135deg, #1e40af, #3b82f6);
+    --gradient-green: linear-gradient(135deg, #065f46, #10b981);
+    --gradient-orange: linear-gradient(135deg, #92400e, #f59e0b);
+    --gradient-purple: linear-gradient(135deg, #581c87, #a855f7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15,23,42,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; gap: 1rem; height: 56px;
+    overflow-x: auto;
+  }
+  .nav-brand {
+    font-weight: 700; font-size: 1rem; color: var(--brand-accent);
+    white-space: nowrap; margin-right: 1rem;
+  }
+  .nav a {
+    color: var(--text-secondary); text-decoration: none; font-size: 0.8rem;
+    padding: 0.4rem 0.7rem; border-radius: 6px; white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav a:hover, .nav a.active { color: var(--text-primary); background: var(--bg-card); }
+
+  /* Layout */
+  .container { max-width: 1400px; margin: 0 auto; padding: 80px 2rem 4rem; }
+
+  /* Section */
+  .section { margin-bottom: 3rem; scroll-margin-top: 70px; }
+  .section-title {
+    font-size: 1.6rem; font-weight: 700; margin-bottom: 0.3rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .section-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .section-number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--gradient-blue); font-size: 0.85rem; font-weight: 700;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
+  }
+  .card-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+  @media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+
+  /* KPI Cards */
+  .kpi {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem; text-align: center;
+  }
+  .kpi-value { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+  .kpi-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; }
+  .kpi-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+  .kpi.blue .kpi-value { color: var(--brand-accent); }
+  .kpi.green .kpi-value { color: var(--brand-green); }
+  .kpi.orange .kpi-value { color: var(--brand-orange); }
+  .kpi.red .kpi-value { color: var(--brand-red); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { text-align: left; padding: 0.6rem 0.8rem; color: var(--text-secondary); font-weight: 600;
+       border-bottom: 2px solid var(--border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(45,140,240,0.05); }
+  .highlight-row td { background: rgba(34,197,94,0.08); font-weight: 600; }
+
+  /* Tags */
+  .tag {
+    display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+  }
+  .tag-green { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .tag-orange { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .tag-red { background: rgba(239,68,68,0.15); color: #f87171; }
+  .tag-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .tag-purple { background: rgba(168,85,247,0.15); color: #c084fc; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 7px; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .timeline-item { position: relative; margin-bottom: 1.5rem; }
+  .timeline-dot {
+    position: absolute; left: -2rem; top: 0.3rem;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--brand-accent); border: 2px solid var(--bg-dark);
+  }
+  .timeline-item.green .timeline-dot { background: var(--brand-green); }
+  .timeline-item.orange .timeline-dot { background: var(--brand-orange); }
+  .timeline-item.purple .timeline-dot { background: #a855f7; }
+  .timeline-title { font-weight: 700; font-size: 0.95rem; }
+  .timeline-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+  .timeline-body { font-size: 0.85rem; color: var(--text-secondary); }
+  .timeline-body ul { padding-left: 1rem; margin-top: 0.3rem; }
+  .timeline-body li { margin-bottom: 0.2rem; }
+
+  /* Workflow Diagram */
+  .workflow { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding: 1rem 0; }
+  .workflow-stage {
+    flex: 1; min-width: 180px; padding: 1rem;
+    border: 1px solid var(--border); position: relative;
+  }
+  .workflow-stage:first-child { border-radius: 12px 0 0 12px; }
+  .workflow-stage:last-child { border-radius: 0 12px 12px 0; }
+  .workflow-stage::after {
+    content: ''; position: absolute; right: -10px; top: 50%;
+    transform: translateY(-50%);
+    border-left: 10px solid var(--border); border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent; z-index: 1;
+  }
+  .workflow-stage:last-child::after { display: none; }
+  .workflow-stage-title {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); margin-bottom: 0.3rem;
+  }
+  .workflow-stage-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .workflow-stage ul { list-style: none; font-size: 0.75rem; color: var(--text-secondary); }
+  .workflow-stage li { margin-bottom: 0.2rem; padding-left: 0.8rem; position: relative; }
+  .workflow-stage li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); }
+  .workflow-stage.s1 { background: rgba(30,64,175,0.15); }
+  .workflow-stage.s2 { background: rgba(6,95,70,0.15); }
+  .workflow-stage.s3 { background: rgba(146,64,14,0.15); }
+  .workflow-stage.s4 { background: rgba(88,28,135,0.15); }
+  .workflow-stage.s5 { background: rgba(239,68,68,0.1); }
+
+  /* Chart containers */
+  .chart-container { position: relative; height: 280px; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 3rem; margin-bottom: 2rem; text-align: center;
+  }
+  .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .hero h1 span { color: var(--brand-accent); }
+  .hero p { color: var(--text-secondary); font-size: 1.1rem; max-width: 700px; margin: 0 auto; }
+  .hero-meta { margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+  .hero-meta-item { text-align: center; }
+  .hero-meta-item .value { font-size: 1.3rem; font-weight: 700; color: var(--brand-accent); }
+  .hero-meta-item .label { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* Callout */
+  .callout {
+    border-left: 3px solid var(--brand-accent); padding: 1rem 1.25rem;
+    background: rgba(45,140,240,0.08); border-radius: 0 8px 8px 0;
+    margin: 1rem 0; font-size: 0.9rem;
+  }
+  .callout.green { border-color: var(--brand-green); background: rgba(34,197,94,0.08); }
+  .callout.orange { border-color: var(--brand-orange); background: rgba(245,158,11,0.08); }
+  .callout.red { border-color: var(--brand-red); background: rgba(239,68,68,0.08); }
+  .callout strong { color: var(--text-primary); }
+
+  /* Footer */
+  .footer {
+    text-align: center; padding: 2rem; color: var(--text-muted);
+    font-size: 0.75rem; border-top: 1px solid var(--border); margin-top: 3rem;
+  }
+
+  /* Print */
+  @media print {
+    .nav { display: none; }
+    .container { padding-top: 1rem; }
+    body { background: #fff; color: #111; }
+    .card, .kpi { border: 1px solid #ddd; background: #f9f9f9; }
+    .hero { background: #f0f4f8; }
+  }
+
+  /* Misc */
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .text-green { color: var(--brand-green); }
+  .text-orange { color: var(--brand-orange); }
+  .text-red { color: var(--brand-red); }
+  .text-blue { color: var(--brand-accent); }
+  .text-muted { color: var(--text-muted); }
+  .text-sm { font-size: 0.85rem; }
+  .text-xs { font-size: 0.75rem; }
+  .mb-1 { margin-bottom: 1rem; }
+  .mb-2 { margin-bottom: 2rem; }
+  .mt-1 { margin-top: 1rem; }
+  .fw-700 { font-weight: 700; }
+  .bar { height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; margin-top: 0.3rem; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+
+  .risk-matrix { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+  .risk-cell { padding: 0.6rem; border-radius: 8px; font-size: 0.8rem; }
+  .risk-low { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); }
+  .risk-med { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); }
+  .risk-high { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-brand">KESTREL</span>
+    <a href="#executive-summary">Summary</a>
+    <a href="#market">Market</a>
+    <a href="#strategy">Strategy</a>
+    <a href="#skus">SKUs</a>
+    <a href="#pnl">P&L</a>
+    <a href="#budget">Budget</a>
+    <a href="#ppc">PPC Plan</a>
+    <a href="#external-traffic">External Traffic</a>
+    <a href="#tiktok">TikTok Shop</a>
+    <a href="#timeline">30-60-90</a>
+    <a href="#workflow">Workflow</a>
+    <a href="#international">International</a>
+    <a href="#resources">Resources</a>
+    <a href="#risks">Risks</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- HERO -->
+<!-- ============================================================ -->
+<div class="hero">
+  <h1>Kestrel <span>Pickleball Balls</span></h1>
+  <p>Amazon Launch Strategy &amp; Investment Thesis<br>Board Presentation &mdash; April 2026</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="value">$11.4M</div>
+      <div class="label">Annual Category Size</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="value">79%</div>
+      <div class="label">Apex Monopoly</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="value">$1.25-$1.75</div>
+      <div class="label">Vacant Price/Ball Gap</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="value">$47K-$130K</div>
+      <div class="label">Launch Investment</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 1. EXECUTIVE SUMMARY -->
+<!-- ============================================================ -->
+<div class="section" id="executive-summary">
+  <div class="section-title"><span class="section-number">1</span> Executive Summary</div>
+  <div class="section-subtitle">The opportunity, the thesis, and why now</div>
+
+  <div class="card">
+    <div class="card-title">Investment Thesis</div>
+    <p class="text-sm" style="color:var(--text-secondary); margin-bottom:1rem;">
+      The Amazon Pickleball Balls subcategory generates <strong>$946K/month</strong> (~$11.4M annually) across only 33 brands and 175 ASINs. Apex Sports holds a near-monopoly at <strong>79% market share</strong>, but its branded search terms are declining (-20.9% YoY). A structural pricing gap exists at <strong>$1.25-$1.75/ball</strong> &mdash; too expensive for Chinese white-labels, too cheap for Apex. Kestrel can enter this gap with USAP-certified rotomolded balls, leveraging its existing racket sports brand credibility.
+    </p>
+    <p class="text-sm" style="color:var(--text-secondary); margin-bottom:1rem;">
+      The 2026 Amazon landscape rewards sellers who bring their own traffic. Amazon's COSMO Knowledge Graph (6.3M nodes) and Rufus AI agent ($12B incremental sales) have replaced keyword-matching with semantic intent prediction. External traffic now carries a <strong>1.3-1.8x ranking multiplier</strong> vs internal PPC. Kestrel's launch plan combines a TikTok Shop blitz (200 creators, 48-hour coordinated post), external traffic filtration, and COSMO-optimized listings to build velocity through multiple channels simultaneously.
+    </p>
+    <div class="callout green">
+      <strong>Why Kestrel wins:</strong> (1) Established racket sports brand &mdash; not another Chinese white-label. (2) USAP-certified rotomolded construction eliminates the #1 competitor complaint (cracking). (3) Pack-size arbitrage &mdash; 4-pack at $12.99 ($3.25/ball) vs Apex 3-pack at $9.97 ($3.32/ball). (4) Subscribe &amp; Save transforms a $19 one-time sale into $45-$57 LTV.
+    </div>
+  </div>
+
+  <div class="grid-4">
+    <div class="kpi blue">
+      <div class="kpi-value">36.5M</div>
+      <div class="kpi-label">US Pickleball Players</div>
+      <div class="kpi-sub">+311% since 2021</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-value">40-50%</div>
+      <div class="kpi-label">Target Gross Margin</div>
+      <div class="kpi-sub">50% on external traffic orders</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-value">$0.19</div>
+      <div class="kpi-label">COGS/Ball (5K+ Units)</div>
+      <div class="kpi-sub">12% of retail price</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-value">$45-$57</div>
+      <div class="kpi-label">90-Day S&S LTV</div>
+      <div class="kpi-sub">vs $18.99 single purchase</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 2. MARKET ANALYSIS -->
+<!-- ============================================================ -->
+<div class="section" id="market">
+  <div class="section-title"><span class="section-number">2</span> Market Analysis</div>
+  <div class="section-subtitle">Category data from SmartScout, Cerebro, and 8 strategy documents (April 2026)</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Competitive Landscape</div>
+      <table>
+        <thead>
+          <tr><th>Brand</th><th>Monthly Rev</th><th>Share</th><th>Origin</th></tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row"><td>Apex Sports</td><td>$748,269</td><td>79.0%</td><td>US</td></tr>
+          <tr><td>cyclotron</td><td>$24,742</td><td>2.6%</td><td>CN</td></tr>
+          <tr><td>Navona</td><td>$23,111</td><td>2.4%</td><td>CN</td></tr>
+          <tr><td>Strike</td><td>$20,968</td><td>2.2%</td><td>US</td></tr>
+          <tr><td>VOLT</td><td>$15,776</td><td>1.7%</td><td>US</td></tr>
+          <tr><td>GoSports</td><td>$13,458</td><td>1.4%</td><td>US</td></tr>
+          <tr><td>Srikel</td><td>$12,805</td><td>1.4%</td><td>CN</td></tr>
+          <tr><td style="color:var(--text-muted)">26 others combined</td><td style="color:var(--text-muted)">$87,595</td><td style="color:var(--text-muted)">9.3%</td><td></td></tr>
+        </tbody>
+      </table>
+      <div class="callout mt-1" style="font-size:0.8rem;">
+        <strong>Key signal:</strong> Apex-branded search terms declining &mdash; "apex" -20.9%, "apex a-40" -50.8% YoY. Generic terms growing. Consumers diversifying away from brand loyalty.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">The Blue Ocean Pricing Gap</div>
+      <div style="margin-bottom:1rem;">
+        <div class="flex-between text-xs mb-1">
+          <span>Budget: $0.60-$0.75/ball</span>
+          <span class="tag tag-red">COMMODITY</span>
+        </div>
+        <div class="bar"><div class="bar-fill" style="width:25%;background:var(--brand-red);"></div></div>
+        <div class="text-xs text-muted" style="margin-top:0.2rem;">Amazon Basics, Chinese white-label &mdash; disposable quality</div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <div class="flex-between text-xs mb-1">
+          <span class="fw-700 text-green">MID-TIER: $1.25-$1.75/ball</span>
+          <span class="tag tag-green">VACANT &mdash; KESTREL TARGET</span>
+        </div>
+        <div class="bar"><div class="bar-fill" style="width:0%;background:var(--brand-green);border:2px dashed var(--brand-green);"></div></div>
+        <div class="text-xs text-green" style="margin-top:0.2rem;font-weight:600;">Nobody occupies this position. Tournament-quality at value pricing.</div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <div class="flex-between text-xs mb-1">
+          <span>Premium: $2.50-$3.75/ball</span>
+          <span class="tag tag-blue">ESTABLISHED</span>
+        </div>
+        <div class="bar"><div class="bar-fill" style="width:85%;background:var(--brand-accent);"></div></div>
+        <div class="text-xs text-muted" style="margin-top:0.2rem;">Apex A-40 ($3.00), Summit Pro K1 ($3.75), NEXUS Ironcore 40 ($3.33)</div>
+      </div>
+
+      <div class="card-title" style="margin-top:1.5rem;">Breakout Search Terms</div>
+      <table>
+        <thead><tr><th>Keyword</th><th>YoY Growth</th></tr></thead>
+        <tbody>
+          <tr><td>pickleball practice equipment</td><td class="text-green fw-700">+16,206%</td></tr>
+          <tr><td>pickleballs outdoor balls</td><td class="text-green fw-700">+1,216%</td></tr>
+          <tr><td>pickleball weight</td><td class="text-green fw-700">+5,200%</td></tr>
+          <tr><td>outdoor pickleball balls</td><td class="text-green fw-700">+1,216%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid-2 mt-1">
+    <div class="card">
+      <div class="card-title">Category Metrics</div>
+      <table>
+        <tbody>
+          <tr><td>Monthly category revenue</td><td class="fw-700">$946,724</td></tr>
+          <tr><td>Trailing 12-month revenue</td><td>$15.4M</td></tr>
+          <tr><td>Monthly units sold</td><td>40,767</td></tr>
+          <tr><td>Number of brands</td><td>33</td></tr>
+          <tr><td>Number of ASINs</td><td>175</td></tr>
+          <tr><td>Amazon seller share (1P)</td><td>82.7%</td></tr>
+          <tr><td>3P seller share</td><td>17.3%</td></tr>
+          <tr><td>Global ball market (2024)</td><td>$36.4M</td></tr>
+          <tr><td>Projected (2034)</td><td>$66.2M (9.2% CAGR)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Buyer Pain Points (Review Mining)</div>
+      <div style="margin-bottom:1rem;">
+        <div class="flex-between text-sm"><span>Cracking after 3-10 games</span><span class="fw-700 text-red">33%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:33%;background:var(--brand-red);"></div></div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <div class="flex-between text-sm"><span>Seam splitting (injection-molded)</span><span class="fw-700 text-orange">22%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:22%;background:var(--brand-orange);"></div></div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <div class="flex-between text-sm"><span>Inconsistent bounce</span><span class="fw-700 text-orange">18%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:18%;background:var(--brand-orange);"></div></div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <div class="flex-between text-sm"><span>Not truly USAP-certified</span><span class="fw-700" style="color:var(--text-secondary)">12%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:12%;background:var(--text-muted);"></div></div>
+      </div>
+      <div class="callout green" style="font-size:0.8rem;margin-top:1rem;">
+        <strong>Kestrel differentiator:</strong> Rotomolded construction (single seamless sphere) eliminates the seam that causes cracking. Uniform wall thickness = straighter flight, predictable bounce. Directly addresses the #1 complaint.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 3. LAUNCH STRATEGY -->
+<!-- ============================================================ -->
+<div class="section" id="strategy">
+  <div class="section-title"><span class="section-number">3</span> Launch Strategy</div>
+  <div class="section-subtitle">Multi-channel approach: Amazon PPC + External Traffic + TikTok Shop + Community</div>
+
+  <div class="card">
+    <div class="card-title">The 2026 Paradigm: External Discovery + Amazon Fulfillment</div>
+    <p class="text-sm" style="color:var(--text-secondary);margin-bottom:1rem;">
+      In 2018, successful sellers relied on Amazon PPC to find customers. In 2026, <strong>27 out of 30 surveyed sellers</strong> bring their own traffic through TikTok, YouTube, Instagram, or pre-built email lists. Amazon's A10 algorithm now explicitly weights external traffic that converts as a <strong>stronger ranking signal than internal PPC</strong>.
+    </p>
+
+    <div class="grid-3">
+      <div style="background:rgba(30,64,175,0.12);border-radius:10px;padding:1rem;">
+        <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:0.05em;">Pillar 1</div>
+        <div class="fw-700" style="margin:0.3rem 0;">Amazon PPC</div>
+        <div class="text-xs" style="color:var(--text-secondary);">Auto discovery, Manual Exact on proven keywords, Product Targeting on competitors, Sponsored Brands Video</div>
+        <div class="text-xs fw-700 text-blue" style="margin-top:0.5rem;">Ranking weight: 1.0x (baseline)</div>
+      </div>
+      <div style="background:rgba(6,95,70,0.12);border-radius:10px;padding:1rem;">
+        <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:0.05em;">Pillar 2</div>
+        <div class="fw-700" style="margin:0.3rem 0;">External Traffic (Filtered)</div>
+        <div class="text-xs" style="color:var(--text-secondary);">Google Ads, TikTok Ads, Email/SMS &mdash; all routed through LandingCube bridge pages for 20% conversion (vs 5% direct)</div>
+        <div class="text-xs fw-700 text-green" style="margin-top:0.5rem;">Ranking weight: 1.3-1.8x + 10% BRB</div>
+      </div>
+      <div style="background:rgba(88,28,135,0.12);border-radius:10px;padding:1rem;">
+        <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:0.05em;">Pillar 3</div>
+        <div class="fw-700" style="margin:0.3rem 0;">TikTok Shop + Community</div>
+        <div class="text-xs" style="color:var(--text-secondary);">200-creator blitz launch, TikTok Shop as marketing engine, tournament sponsorships, Reddit community seeding</div>
+        <div class="text-xs fw-700" style="color:#c084fc;margin-top:0.5rem;">Halo effect: brand search lift on Amazon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">COSMO / Rufus Optimization</div>
+    <p class="text-sm" style="color:var(--text-secondary);margin-bottom:1rem;">
+      Amazon is no longer a search engine &mdash; it's a Knowledge Graph. Listings must be engineered as semantic nodes for COSMO (6.3M nodes, 29M edges) and Rufus AI ($12B incremental sales, 60% higher purchase completion). Four Knowledge Graph edges to close:
+    </p>
+    <div class="grid-4">
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">WHO</div>
+        <div class="text-xs text-muted">Tournament players, senior league, competitive intermediate</div>
+      </div>
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">WHERE</div>
+        <div class="text-xs text-muted">Outdoor hardcourt, coastal wind, sub-40&deg; winter</div>
+      </div>
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">WHAT Features</div>
+        <div class="text-xs text-muted">5x stronger, crack-resistant, consistent bounce</div>
+      </div>
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">WHAT Activity</div>
+        <div class="text-xs text-muted">Rapid-fire dinking, low-noise neighborhood practice</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 4. SKU ARCHITECTURE -->
+<!-- ============================================================ -->
+<div class="section" id="skus">
+  <div class="section-title"><span class="section-number">4</span> SKU Architecture &amp; Unit Economics</div>
+  <div class="section-subtitle">Decoy pricing structure with 12-pack as target hero SKU</div>
+
+  <div class="card">
+    <div class="card-title">SKU Lineup &amp; Decoy Pricing Architecture</div>
+    <table>
+      <thead>
+        <tr><th>SKU</th><th>Pack</th><th>Price</th><th>Per Ball</th><th>COGS</th><th>Gross Profit</th><th>Margin</th><th>Role</th><th>Launch</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PS-OUT-4</td><td>4-pack</td><td>$7.99-$12.99</td><td>$2.00-$3.25</td>
+          <td>$0.76-$3.40</td><td>$2.03-$5.09</td><td>25-39%</td>
+          <td><span class="tag tag-blue">TRIAL</span></td><td>Month 1</td>
+        </tr>
+        <tr class="highlight-row">
+          <td>PS-OUT-12</td><td>12-pack</td><td>$18.99-$29.99</td><td>$1.58-$2.50</td>
+          <td>$2.28-$10.20</td><td>$7.60-$14.99</td><td>40-50%</td>
+          <td><span class="tag tag-green">HERO</span></td><td>Month 1</td>
+        </tr>
+        <tr>
+          <td>PS-OUT-6</td><td>6-pack</td><td>$17.99</td><td>$3.00</td>
+          <td>$1.14-$5.10</td><td>$8.15-$12.15</td><td>45-68%</td>
+          <td><span class="tag tag-orange">UNDERCUT</span></td><td>Month 4</td>
+        </tr>
+        <tr>
+          <td>PS-OUT-24</td><td>24/36-pack</td><td>$34.99-$84.99</td><td>$1.46-$2.36</td>
+          <td>$4.56-$30.60</td><td>$12.18-$39.14</td><td>35-46%</td>
+          <td><span class="tag tag-purple">DECOY/ANCHOR</span></td><td>Month 1</td>
+        </tr>
+        <tr>
+          <td>PS-OUT-100</td><td>100-pack</td><td>$199.99-$239.99</td><td>$2.00-$2.40</td>
+          <td>$19-$85</td><td>$84.99-$170.99</td><td>42-71%</td>
+          <td><span class="tag tag-purple">INSTITUTIONAL</span></td><td>Month 1</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout mt-1" style="font-size:0.8rem;">
+      <strong>Decoy logic:</strong> The 24-pack exists to make the 12-pack look like the "smart choice." The 4-pack is a low-risk trial that feeds Subscribe &amp; Save conversion. The 100-pack targets clubs, teaching pros, and B2B procurement.
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Hero SKU Unit Economics (12-Pack)</div>
+      <table>
+        <tbody>
+          <tr><td>Revenue</td><td class="fw-700">$18.99-$29.99</td></tr>
+          <tr><td>COGS ($0.19-$0.85/ball x 12)</td><td>($2.28-$10.20)</td></tr>
+          <tr><td>Amazon referral fee (15%)</td><td>($2.85-$4.50)</td></tr>
+          <tr><td>FBA fulfillment</td><td>($3.50)</td></tr>
+          <tr style="border-top:2px solid var(--border);">
+            <td class="fw-700">Gross Profit</td>
+            <td class="fw-700 text-green">$7.60-$14.99</td>
+          </tr>
+          <tr><td class="fw-700">Gross Margin</td><td class="fw-700 text-green">40-50%</td></tr>
+          <tr><td>+ Brand Referral Bonus (external)</td><td class="text-green">+$1.90 (10%)</td></tr>
+          <tr><td class="fw-700">Effective margin (external orders)</td><td class="fw-700 text-green">~50%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Subscribe &amp; Save LTV Model</div>
+      <table>
+        <tbody>
+          <tr><td>Single purchase value</td><td>$18.99</td></tr>
+          <tr><td>Repurchase cycle</td><td>Every 30-45 days (balls crack)</td></tr>
+          <tr><td class="fw-700">90-day S&S LTV</td><td class="fw-700 text-green">$45-$57</td></tr>
+          <tr><td>LTV multiplier</td><td class="fw-700 text-green">2.4-3.0x</td></tr>
+          <tr><td>Allowable CAC (single)</td><td>$7.60</td></tr>
+          <tr><td class="fw-700">Allowable CAC (S&S)</td><td class="fw-700 text-green">$22+</td></tr>
+          <tr><td>Coupon-to-S&S conversion</td><td>~20%</td></tr>
+          <tr><td>S&S recurring revenue uplift</td><td>+40%</td></tr>
+        </tbody>
+      </table>
+      <div class="callout green mt-1" style="font-size:0.8rem;">
+        <strong>Key insight:</strong> Pickleball balls are a consumable (crack after 3-10 games). S&S transforms a commodity product into a recurring revenue business. Target: 20%+ of buyers on subscription by Month 4.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 5. P&L FORECAST -->
+<!-- ============================================================ -->
+<div class="section" id="pnl">
+  <div class="section-title"><span class="section-number">5</span> P&L Forecast</div>
+  <div class="section-subtitle">Three scenarios: Conservative, Moderate, Aggressive</div>
+
+  <div class="card">
+    <div class="card-title">12-Month Revenue Projection</div>
+    <div class="chart-container">
+      <canvas id="revenueChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Conservative</th><th>Moderate</th><th>Aggressive</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Year 1 Revenue</td><td>$45-$47K</td><td class="fw-700">$202K</td><td class="fw-700 text-green">$1.2M</td></tr>
+        <tr><td>Year 1 Units</td><td>2,080 packs</td><td>11,620 units</td><td>32,560 units</td></tr>
+        <tr><td>Launch Investment</td><td>$47K</td><td>$75K</td><td>$130K</td></tr>
+        <tr><td>Year 1 Ad Budget</td><td>$60-$75K</td><td>$32K</td><td>$31K</td></tr>
+        <tr><td>TACoS Month 1</td><td class="text-red">150-200%</td><td class="text-orange">35%</td><td class="text-orange">25-35%</td></tr>
+        <tr><td>TACoS Month 12</td><td class="text-orange">30-40%</td><td class="text-green">10%</td><td class="text-green">8-12%</td></tr>
+        <tr><td>Gross Margin (mature)</td><td>35-40%</td><td>40-45%</td><td>45-50%</td></tr>
+        <tr><td>Net Contribution (mature)</td><td class="text-orange">Breakeven</td><td class="text-green">5-10%</td><td class="text-green">8-12%</td></tr>
+        <tr><td>Payback Period</td><td>12-18 months</td><td>6-9 months</td><td>4-6 months</td></tr>
+      </tbody>
+    </table>
+    <div class="callout orange mt-1" style="font-size:0.8rem;">
+      <strong>Recommended scenario:</strong> Moderate ($75K investment). The aggressive scenario assumes rotomolded construction, all pack sizes from Day 1, and a 100-pack institutional SKU. Conservative is explicitly unprofitable for several months. Moderate balances velocity-building with controlled burn.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Key Metrics Progression (Moderate Scenario)</div>
+    <div class="grid-2">
+      <div class="chart-container">
+        <canvas id="tacosChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="organicChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 6. BUDGET ALLOCATION -->
+<!-- ============================================================ -->
+<div class="section" id="budget">
+  <div class="section-title"><span class="section-number">6</span> Launch Budget</div>
+  <div class="section-subtitle">$47K base plan with $130K scaled alternative</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">$47K Budget Allocation</div>
+      <div class="chart-container">
+        <canvas id="budgetChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Budget Detail</div>
+      <table>
+        <thead><tr><th>Category</th><th>Amount</th><th>%</th></tr></thead>
+        <tbody>
+          <tr><td>Inventory (FBA, 2-3 mo supply)</td><td class="fw-700">$12,000-$15,000</td><td>28%</td></tr>
+          <tr><td>Amazon PPC (SP/SB/SD)</td><td class="fw-700">$12,000-$15,000</td><td>28%</td></tr>
+          <tr><td>External Traffic (Spark/Meta)</td><td>$6,000-$8,000</td><td>14%</td></tr>
+          <tr><td>Creator Connections + Affiliates</td><td>$5,000</td><td>10%</td></tr>
+          <tr><td>UGC/Creator Content</td><td>$4,000-$6,000</td><td>10%</td></tr>
+          <tr><td>Community/Tournaments</td><td>$4,000-$6,000</td><td>10%</td></tr>
+          <tr><td>AI Tools + Measurement</td><td>$1,500-$2,000</td><td>4%</td></tr>
+          <tr><td>USAP Cert + Compliance</td><td>$2,000-$3,000</td><td>5%</td></tr>
+          <tr style="border-top:2px solid var(--border);"><td class="fw-700">Total</td><td class="fw-700 text-blue">~$47,000</td><td></td></tr>
+        </tbody>
+      </table>
+      <div class="callout mt-1" style="font-size:0.8rem;">
+        <strong>Scaled alternative ($130K):</strong> Kestrel plan allocates $84.8K inventory, $32.4K ads, plus creative, certification, and insurance. Enables all 5 SKUs from Day 1 and aggressive TikTok Shop blitz.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 7. PPC PLAN -->
+<!-- ============================================================ -->
+<div class="section" id="ppc">
+  <div class="section-title"><span class="section-number">7</span> PPC Campaign Architecture</div>
+  <div class="section-subtitle">Four-pillar structure with keyword graduation lifecycle</div>
+
+  <div class="card">
+    <div class="card-title">Campaign Structure (Month 1)</div>
+    <table>
+      <thead>
+        <tr><th>Campaign</th><th>Type</th><th>Daily Budget</th><th>Starting Bid</th><th>Purpose</th><th>Strategy</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fw-700">SP | PS-OUT-12 | Auto | Research</td>
+          <td><span class="tag tag-blue">AUTO</span></td>
+          <td>$40/day</td><td>$0.75-$1.00</td>
+          <td>Keyword discovery &amp; COSMO/Rufus feed</td>
+          <td>Dynamic Down Only</td>
+        </tr>
+        <tr>
+          <td class="fw-700">SP | PS-OUT-12 | KW-Exact | Performance</td>
+          <td><span class="tag tag-green">MANUAL</span></td>
+          <td>$50/day</td><td>$1.00-$1.50</td>
+          <td>Rank on 15-20 core pickleball terms</td>
+          <td>Dynamic Up &amp; Down (30 days)</td>
+        </tr>
+        <tr>
+          <td class="fw-700">SP | PS-OUT-12 | PAT-Competitors | Offense</td>
+          <td><span class="tag tag-orange">PAT</span></td>
+          <td>$25/day</td><td>$0.80-$1.20</td>
+          <td>Target Apex A-40, Summit, NEXUS ASINs</td>
+          <td>Dynamic Down Only</td>
+        </tr>
+        <tr>
+          <td class="fw-700">SP | PS-OUT-12 | Brand | Defense</td>
+          <td><span class="tag tag-purple">BRANDED</span></td>
+          <td>$10/day</td><td>$0.50</td>
+          <td>Protect own brand terms from poaching</td>
+          <td>Fixed</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-xs text-muted mt-1">Total Month 1 PPC: ~$3,750/month ($125/day) | Target ACoS: 40-60% (acceptable for discovery)</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Keyword Graduation Lifecycle</div>
+      <div class="workflow">
+        <div class="workflow-stage s1">
+          <div class="workflow-stage-title">Step 1</div>
+          <div class="workflow-stage-name">Discover</div>
+          <ul><li>Auto campaigns mine terms</li><li>High ACoS OK</li><li>Data mining priority</li></ul>
+        </div>
+        <div class="workflow-stage s2">
+          <div class="workflow-stage-title">Step 2</div>
+          <div class="workflow-stage-name">Test</div>
+          <ul><li>Broad/Phrase match</li><li>Controlled bids</li><li>Test reach + variants</li></ul>
+        </div>
+        <div class="workflow-stage s3">
+          <div class="workflow-stage-title">Step 3</div>
+          <div class="workflow-stage-name">Isolate</div>
+          <ul><li>Exact Match winners</li><li>Thematic ad groups</li><li>Aggressive bids</li></ul>
+        </div>
+        <div class="workflow-stage s4">
+          <div class="workflow-stage-title">Step 4</div>
+          <div class="workflow-stage-name">Negate</div>
+          <ul><li>Neg Exact in Auto</li><li>Prevents bid cannibalization</li><li>Critical step!</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">PPC Performance Targets</div>
+      <table>
+        <thead><tr><th>Metric</th><th>M1-3</th><th>M4-6</th><th>M7-12</th></tr></thead>
+        <tbody>
+          <tr><td>ACoS</td><td class="text-red">40-60%</td><td class="text-orange">20-30%</td><td class="text-green">15-22%</td></tr>
+          <tr><td>TACoS</td><td class="text-red">25-50%</td><td class="text-orange">8-15%</td><td class="text-green">5-8%</td></tr>
+          <tr><td>Organic % of Sales</td><td>15-30%</td><td>45-55%</td><td class="text-green">55-65%</td></tr>
+          <tr><td>Monthly Ad Spend</td><td>$3,750</td><td>$2,500-3,000</td><td>$2,000-2,500</td></tr>
+          <tr><td>Bidding Strategy</td><td>Up &amp; Down</td><td>Down Only</td><td>Down Only</td></tr>
+        </tbody>
+      </table>
+      <div class="callout green mt-1" style="font-size:0.8rem;">
+        <strong>Month 3+ expansion:</strong> Add Sponsored Brands Video (507% CTR lift via HeyGen AI), Sponsored Display retargeting (cart abandoners), AMC Path-to-Purchase analysis.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Top 15 Target Keywords (from Cerebro 4,165-keyword extract)</div>
+    <table>
+      <thead><tr><th>Keyword</th><th>Monthly Volume</th><th>YoY Change</th><th>Match Type</th></tr></thead>
+      <tbody>
+        <tr><td>pickleball balls</td><td>70,744</td><td class="text-red">-5.6%</td><td>Exact</td></tr>
+        <tr><td>pickleball</td><td>60,912</td><td class="text-green">+5.8%</td><td>Exact</td></tr>
+        <tr><td>wiffle balls</td><td>52,419</td><td class="text-green">+10.6%</td><td>Broad</td></tr>
+        <tr><td>pickleball set</td><td>46,170</td><td class="text-green">+36.2%</td><td>Broad</td></tr>
+        <tr><td>outdoor pickleball balls</td><td>8,489</td><td class="text-green fw-700">+1,216%</td><td>Exact</td></tr>
+        <tr><td>pickleball accessories</td><td>7,200</td><td class="text-green">+45%</td><td>Broad</td></tr>
+        <tr><td>pickleball balls outdoor</td><td>6,800</td><td class="text-green">+890%</td><td>Exact</td></tr>
+        <tr><td>pickleball practice equipment</td><td>5,055</td><td class="text-green fw-700">+16,206%</td><td>Broad</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 8. EXTERNAL TRAFFIC -->
+<!-- ============================================================ -->
+<div class="section" id="external-traffic">
+  <div class="section-title"><span class="section-number">8</span> External Traffic Strategy</div>
+  <div class="section-subtitle">The Perpetual Sales Machine &mdash; 5-channel flywheel</div>
+
+  <div class="card">
+    <div class="card-title">A10 Traffic Filtration Protocol</div>
+    <div class="grid-2">
+      <div>
+        <div class="text-sm fw-700 text-red mb-1">Without Filtration (Direct Link)</div>
+        <div style="background:rgba(239,68,68,0.08);border-radius:8px;padding:1rem;font-size:0.85rem;">
+          1,000 cold clicks &rarr; Amazon PDP<br>
+          50 conversions (5% CVR)<br>
+          950 bounces &rarr; Amazon sees weak listing<br>
+          <span class="fw-700 text-red">Result: Rank suppression</span>
+        </div>
+      </div>
+      <div>
+        <div class="text-sm fw-700 text-green mb-1">With Filtration (LandingCube/PixelMe)</div>
+        <div style="background:rgba(34,197,94,0.08);border-radius:8px;padding:1rem;font-size:0.85rem;">
+          1,000 clicks &rarr; Bridge page &rarr; 600 drop off &rarr; 400 proceed<br>
+          80 conversions (20% CVR)<br>
+          Email capture + retargeting pixel on 600 drop-offs<br>
+          <span class="fw-700 text-green">Result: Rank boost + owned audience asset</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">External Traffic Ranking Multipliers</div>
+    <table>
+      <thead><tr><th>Source</th><th>Ranking Weight</th><th>CPM</th><th>Strategy</th></tr></thead>
+      <tbody>
+        <tr><td class="fw-700">Google Organic</td><td class="text-green fw-700">1.8x</td><td>Medium</td><td>Blog/advertorial &rarr; Attribution link</td></tr>
+        <tr><td class="fw-700">Email / SMS</td><td class="text-green fw-700">1.5x</td><td>Near zero</td><td>Pre-qualified warm traffic, highest conversion</td></tr>
+        <tr><td class="fw-700">Social / TikTok</td><td class="text-green fw-700">1.3x</td><td>Very low (10-yr lows)</td><td>+ 10% Brand Referral Bonus</td></tr>
+        <tr><td>Amazon PPC</td><td>1.0x (baseline)</td><td>High</td><td>Standard internal traffic</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">5-Channel Perpetual Sales Machine</div>
+    <div class="workflow">
+      <div class="workflow-stage s1">
+        <div class="workflow-stage-title">Channel 1</div>
+        <div class="workflow-stage-name">Google &rarr; Amazon</div>
+        <ul><li>High-intent keywords</li><li>$5/day per keyword</li><li>Attribution link</li><li>10% BRB credit</li></ul>
+      </div>
+      <div class="workflow-stage s2">
+        <div class="workflow-stage-title">Channel 2</div>
+        <div class="workflow-stage-name">Google &rarr; Blog</div>
+        <ul><li>Problem-focused content</li><li>AI-generated articles</li><li>Email capture</li><li>Attribution link</li></ul>
+      </div>
+      <div class="workflow-stage s3">
+        <div class="workflow-stage-title">Channel 3</div>
+        <div class="workflow-stage-name">Email Nurture</div>
+        <ul><li>Lead magnet capture</li><li>Value-first drip</li><li>Pre-sold traffic</li><li>Highest conversion</li></ul>
+      </div>
+      <div class="workflow-stage s4">
+        <div class="workflow-stage-title">Channel 4</div>
+        <div class="workflow-stage-name">TikTok UGC</div>
+        <ul><li>10-15 creators/month</li><li>Real demos, stories</li><li>CPMs at 10-yr lows</li><li>Spark Ads amplify</li></ul>
+      </div>
+      <div class="workflow-stage s5">
+        <div class="workflow-stage-title">Channel 5</div>
+        <div class="workflow-stage-name">TikTok Shop</div>
+        <ul><li>Direct TikTok sales</li><li>Amazon halo effect</li><li>MCF fulfillment</li><li>Brand search lift</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 9. TIKTOK SHOP -->
+<!-- ============================================================ -->
+<div class="section" id="tiktok">
+  <div class="section-title"><span class="section-number">9</span> TikTok Shop Launch</div>
+  <div class="section-subtitle">Blitz launch framework &mdash; 200 creators, 48-hour coordinated post</div>
+
+  <div class="grid-4">
+    <div class="kpi blue">
+      <div class="kpi-value">$15B</div>
+      <div class="kpi-label">US TikTok Shop GMV</div>
+      <div class="kpi-sub">+97% YoY</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-value">200</div>
+      <div class="kpi-label">Creators in Blitz</div>
+      <div class="kpi-sub">48-hour coordinated post</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-value">20-25%</div>
+      <div class="kpi-label">Creator Commission</div>
+      <div class="kpi-sub">Optimize to 10-12% at scale</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-value">60%</div>
+      <div class="kpi-label">Cheaper Than Meta</div>
+      <div class="kpi-sub">96% higher ROAS</div>
+    </div>
+  </div>
+
+  <div class="card mt-1">
+    <div class="card-title">Blitz Launch Timeline</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Day -45 to -7 | SEEDING</div>
+        <div class="timeline-title">Creator Recruitment &amp; Product Seeding</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Handpick 100-200 micro and mid-tier pickleball creators</li>
+            <li>Ship hero SKU + creative brief + unique shop codes</li>
+            <li>Set up WhatsApp creator community (not Discord &mdash; overloaded)</li>
+            <li>Own the creator list off-platform (insurance against TikTok instability)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item green">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Day -7 to -1 | HYPE WEEK</div>
+        <div class="timeline-title">Build FOMO in Creator Network</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Daily messages, countdown graphics, sample UGC to copy</li>
+            <li>Gamification: top 10 creators get double commission + brand shout-out</li>
+            <li>Share Amazon listing finalization, PPC campaigns drafted</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item orange">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Day 0-2 | THE BLITZ</div>
+        <div class="timeline-title">48-Hour Coordinated Launch</div>
+        <div class="timeline-body">
+          <ul>
+            <li>ALL 200 creators post within the same 48-hour window</li>
+            <li>Creates "the product is everywhere" moment</li>
+            <li>Spark Ads amplify best-performing posts</li>
+            <li>Algorithm rewards velocity &mdash; coordinated blast compounds reach</li>
+            <li>Amazon listing live simultaneously (halo effect)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item purple">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Day 3-30 | SCALE</div>
+        <div class="timeline-title">Recruit &amp; Expand</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Recruit next wave using blitz results as proof</li>
+            <li>Launch additional SKUs and bundles on TikTok Shop</li>
+            <li>Graduate top performers into long-term partnerships</li>
+            <li>Amazon organic rank climbing from dual-channel velocity</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Amazon MCF Integration (Approved Feb 25, 2026)</div>
+    <div class="grid-3">
+      <div style="text-align:center;padding:1rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">Single Inventory Pool</div>
+        <div class="text-xs text-muted mt-1">All inventory at Amazon FBA. MCF ships TikTok orders from same pool.</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">Unbranded Packaging</div>
+        <div class="text-xs text-muted mt-1">Customers don't know it came from Amazon. 2-3 day delivery.</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">Preferred Pricing</div>
+        <div class="text-xs text-muted mt-1">Up to 15% off MCF fees + $1 FBA credit per MCF unit shipped.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 10. 30-60-90 DAY PLAN -->
+<!-- ============================================================ -->
+<div class="section" id="timeline">
+  <div class="section-title"><span class="section-number">10</span> 30-60-90 Day Plan</div>
+  <div class="section-subtitle">From foundation through velocity spike to scale</div>
+
+  <div class="card">
+    <div class="timeline">
+      <!-- PRE-LAUNCH -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Weeks -4 to -1 | FOUNDATION</div>
+        <div class="timeline-title">Pre-Launch Foundation</div>
+        <div class="timeline-body">
+          <ul>
+            <li>POE cluster analysis &mdash; validate mid-tier gap with Discover Unmet Demand</li>
+            <li>USAP certification ($4K-$10K)</li>
+            <li>Brand Registry + Amazon Attribution setup</li>
+            <li>Build full variation family Day 1 (Vine policy: merged parents retain max review count of highest tier only)</li>
+            <li>LandingCube bridge page + PixelMe attribution links</li>
+            <li>15-20 AI UGC videos (5x5x5 protocol: 5 avatars x 5 hooks x 5 demographics)</li>
+            <li>Inventory shipped to FBA ($12-$15K for 2-3 month supply)</li>
+            <li>Begin TikTok creator seeding (200 creators)</li>
+          </ul>
+          <div class="text-xs text-muted" style="margin-top:0.5rem;">Investment: $18-$28K | Risk: Certification delays</div>
+        </div>
+      </div>
+
+      <!-- DAYS 1-30 -->
+      <div class="timeline-item green">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Days 1-30 | SOFT LAUNCH + BLITZ</div>
+        <div class="timeline-title">Honeymoon Period + TikTok Blitz</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Amazon Vine enrollment (30 units, $200 New Seller Incentive credit)</li>
+            <li>Auto SP + Manual Exact + PAT campaigns live ($125/day)</li>
+            <li>10-15% launch coupon paired with S&S enrollment</li>
+            <li>Daily Amazon Posts</li>
+            <li><span class="fw-700">TikTok Shop 48-hour Blitz Launch</span> &mdash; all 200 creators post</li>
+            <li>Reddit r/pickleball seeding (10:1 helpfulness ratio)</li>
+            <li>"Product Development Storytelling" in communities</li>
+            <li>Contact 50 pickleball clubs for ambassador partnerships</li>
+          </ul>
+          <div class="text-xs" style="margin-top:0.5rem;">
+            <span class="text-blue fw-700">Targets:</span> $7.5-$10K revenue | 10+ reviews | 40-60% ACoS | TikTok brand search lift begins
+          </div>
+        </div>
+      </div>
+
+      <!-- DAYS 31-60 -->
+      <div class="timeline-item orange">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Days 31-60 | VELOCITY SPIKE</div>
+        <div class="timeline-title">Hard Launch &mdash; Full Channel Activation</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Creator Connections ($5K minimum, target 58+ acceptances from 200 outreach)</li>
+            <li>TikTok Spark Ads ($1,500-$2,500/month, $5-$10 CPM)</li>
+            <li>Archer Affiliates (performance-based, zero monthly fees)</li>
+            <li>Harvest converting terms: Auto &rarr; Manual Exact (keyword graduation)</li>
+            <li>Add Sponsored Brands (requires 3+ reviews)</li>
+            <li>A/B test main image if conversion rate below 10%</li>
+            <li>Sponsored Brands Video via HeyGen (507% CTR lift)</li>
+            <li>2-3 tournament sponsorships ($500-$2,000 each)</li>
+            <li>Subscribe &amp; Save enrollment</li>
+          </ul>
+          <div class="text-xs" style="margin-top:0.5rem;">
+            <span class="text-blue fw-700">Targets:</span> $15-$20K revenue | 20-40 reviews | 35-50% ACoS | S&S conversion begins
+          </div>
+        </div>
+      </div>
+
+      <!-- DAYS 61-90 -->
+      <div class="timeline-item purple">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">Days 61-90 | SCALE &amp; OPTIMIZE</div>
+        <div class="timeline-title">Organic Momentum + Expansion Prep</div>
+        <div class="timeline-body">
+          <ul>
+            <li>AMC Path-to-Purchase analysis (3-4x higher purchase rates with SP + Display)</li>
+            <li>SQP funnel gap analysis &mdash; "Hidden Gold" keyword method</li>
+            <li>Brand Tailored Promotions</li>
+            <li>Launch PS-OUT-6 (6-pack, undercuts Summit by 18%)</li>
+            <li>Virtual Bundle (12-pack + mesh bag) for FBT displacement</li>
+            <li>Climate Pledge Friendly badge application (12% sales lift)</li>
+            <li>Walmart application (200K+ sellers, 15% lower fulfillment costs)</li>
+            <li>Canada FBA evaluation &mdash; tariff arbitrage opportunity</li>
+          </ul>
+          <div class="text-xs" style="margin-top:0.5rem;">
+            <span class="text-blue fw-700">Targets:</span> $25-$35K revenue | 50-100 reviews | 25-35% ACoS | 35-45% organic sales
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 11. WORKFLOW DIAGRAM -->
+<!-- ============================================================ -->
+<div class="section" id="workflow">
+  <div class="section-title"><span class="section-number">11</span> Launch Workflow</div>
+  <div class="section-subtitle">End-to-end operational flow from manufacturing to scale</div>
+
+  <div class="card">
+    <div class="workflow">
+      <div class="workflow-stage s1">
+        <div class="workflow-stage-title">Phase 0</div>
+        <div class="workflow-stage-name">Validate</div>
+        <ul>
+          <li>POE cluster analysis</li>
+          <li>SQP competitor audit</li>
+          <li>Discover Unmet Demand</li>
+          <li>USAP certification</li>
+          <li>Manufacturing order</li>
+        </ul>
+      </div>
+      <div class="workflow-stage s2">
+        <div class="workflow-stage-title">Phase 1</div>
+        <div class="workflow-stage-name">Build</div>
+        <ul>
+          <li>COSMO-optimized listing</li>
+          <li>7-9 images per SKU</li>
+          <li>A+ Content modules</li>
+          <li>Bridge page setup</li>
+          <li>5x5x5 UGC pipeline</li>
+          <li>Creator seeding (200)</li>
+        </ul>
+      </div>
+      <div class="workflow-stage s3">
+        <div class="workflow-stage-title">Phase 2</div>
+        <div class="workflow-stage-name">Launch</div>
+        <ul>
+          <li>Vine reviews (30 units)</li>
+          <li>4-pillar PPC live</li>
+          <li>TikTok 48-hr blitz</li>
+          <li>External traffic filtration</li>
+          <li>Community seeding</li>
+        </ul>
+      </div>
+      <div class="workflow-stage s4">
+        <div class="workflow-stage-title">Phase 3</div>
+        <div class="workflow-stage-name">Optimize</div>
+        <ul>
+          <li>Keyword graduation</li>
+          <li>SQP hidden gold method</li>
+          <li>AMC path-to-purchase</li>
+          <li>S&S enrollment</li>
+          <li>Virtual bundles</li>
+        </ul>
+      </div>
+      <div class="workflow-stage s5">
+        <div class="workflow-stage-title">Phase 4</div>
+        <div class="workflow-stage-name">Scale</div>
+        <ul>
+          <li>Perpetual Sales Machine</li>
+          <li>International (CA/UK)</li>
+          <li>Walmart expansion</li>
+          <li>DSP advertising</li>
+          <li>60/40 organic ratio</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Velocity Flywheel</div>
+    <div style="text-align:center; padding:1.5rem; font-size:0.9rem;">
+      <div style="display:inline-flex; align-items:center; gap:0.5rem; flex-wrap:wrap; justify-content:center;">
+        <span style="background:var(--gradient-blue);padding:0.5rem 1rem;border-radius:8px;font-weight:700;">Inventory</span>
+        <span style="color:var(--text-muted);">&rarr;</span>
+        <span style="background:var(--gradient-green);padding:0.5rem 1rem;border-radius:8px;font-weight:700;">PPC + External Traffic</span>
+        <span style="color:var(--text-muted);">&rarr;</span>
+        <span style="background:var(--gradient-orange);padding:0.5rem 1rem;border-radius:8px;font-weight:700;">Sales Velocity</span>
+        <span style="color:var(--text-muted);">&rarr;</span>
+        <span style="background:var(--gradient-purple);padding:0.5rem 1rem;border-radius:8px;font-weight:700;">Reviews</span>
+        <span style="color:var(--text-muted);">&rarr;</span>
+        <span style="background:rgba(239,68,68,0.3);padding:0.5rem 1rem;border-radius:8px;font-weight:700;">Organic Ranking</span>
+        <span style="color:var(--text-muted);">&rarr;</span>
+        <span style="background:rgba(34,197,94,0.3);padding:0.5rem 1rem;border-radius:8px;font-weight:700;">More Organic Sales</span>
+        <span style="color:var(--text-muted);">&circlearrowleft;</span>
+      </div>
+      <div class="text-xs text-muted mt-1">Non-negotiable rule: Never stock out during honeymoon (Days 0-60). Ranking recovery takes weeks.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 12. INTERNATIONAL EXPANSION -->
+<!-- ============================================================ -->
+<div class="section" id="international">
+  <div class="section-title"><span class="section-number">12</span> International Expansion</div>
+  <div class="section-subtitle">Canada (tariff arbitrage), UK, and Continental Europe</div>
+
+  <div class="grid-3">
+    <div class="card" style="border-top:3px solid var(--brand-green);">
+      <div class="card-title">Canada <span class="tag tag-green" style="margin-left:0.5rem;">MONTH 6-9</span></div>
+      <table>
+        <tbody>
+          <tr><td>Investment</td><td class="fw-700">~$8K</td></tr>
+          <tr><td>Players</td><td>1.54M</td></tr>
+          <tr><td>Per-capita participation</td><td class="fw-700 text-green">2.6% (2x US rate)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout green mt-1" style="font-size:0.8rem;">
+        <strong>Tariff arbitrage:</strong> Canada imposed 25% retaliatory tariff on US-origin goods (March 2025). Ship directly from Chinese manufacturer to Canadian FBA &mdash; Kestrel bypasses tariff while US-origin competitors pay 25% penalty. Same USAP balls, bilingual packaging.
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--brand-accent);">
+      <div class="card-title">United Kingdom <span class="tag tag-blue" style="margin-left:0.5rem;">MONTH 9-12</span></div>
+      <table>
+        <tbody>
+          <tr><td>Investment</td><td class="fw-700">~$6K</td></tr>
+          <tr><td>Active players</td><td>40-55K</td></tr>
+          <tr><td>Membership growth</td><td class="fw-700 text-green">65-73% YoY</td></tr>
+          <tr><td>US merchant exports</td><td class="fw-700 text-green">&lt;1%</td></tr>
+          <tr><td>Target price</td><td>GBP 12.99 (4-pack)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout mt-1" style="font-size:0.8rem;">
+        Amazon.co.uk is 4th largest global marketplace. Low US merchant exports = low competition. UK pickleball is at the US "3 years ago" stage &mdash; fastest adoption growth globally.
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--text-muted);">
+      <div class="card-title">Continental Europe <span class="tag" style="background:rgba(100,116,139,0.15);color:var(--text-muted);margin-left:0.5rem;">YEAR 2+</span></div>
+      <table>
+        <tbody>
+          <tr><td>Germany</td><td>~55 clubs only</td></tr>
+          <tr><td>France</td><td>~500 players</td></tr>
+          <tr><td>Status</td><td class="text-muted">Deferred &mdash; market too nascent</td></tr>
+        </tbody>
+      </table>
+      <div class="callout" style="font-size:0.8rem;border-color:var(--text-muted);background:rgba(100,116,139,0.05);">
+        Continental Europe deferred until Year 2+. Player base insufficient for profitable entry. Monitor Spain and Italy (emerging pickleball markets) for Year 2 reassessment.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout orange mt-1">
+    <strong>Strategic disagreement noted:</strong> Source documents disagree on Canada-first vs UK-first. Canada has tariff arbitrage advantage; UK has less competition and larger marketplace. <strong>Recommendation: Canada first</strong> (Month 6-9) due to tariff arbitrage creating a structural cost advantage. UK follows (Month 9-12) once US operations are stable.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 13. RESOURCES -->
+<!-- ============================================================ -->
+<div class="section" id="resources">
+  <div class="section-title"><span class="section-number">13</span> Launch Resources</div>
+  <div class="section-subtitle">People, technology, and services required</div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">People</div>
+      <table>
+        <tbody>
+          <tr><td class="fw-700">Amazon Brand Manager</td><td>Full-time</td></tr>
+          <tr><td class="fw-700">PPC Specialist</td><td>Full-time or agency</td></tr>
+          <tr><td class="fw-700">TikTok Creator Manager</td><td>Part-time (launch) &rarr; Full-time</td></tr>
+          <tr><td>Content / UGC Producer</td><td>Part-time or freelance</td></tr>
+          <tr><td>Community Manager</td><td>Part-time (Reddit, Discord)</td></tr>
+          <tr><td>Supply Chain / Logistics</td><td>Existing Kestrel team</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Technology Stack</div>
+      <table>
+        <tbody>
+          <tr><td class="fw-700">Helium 10</td><td>Keyword research, Cerebro, listing audit</td></tr>
+          <tr><td class="fw-700">Perpetua or Teikametrics</td><td>AI-managed PPC bidding</td></tr>
+          <tr><td class="fw-700">LandingCube</td><td>Bridge pages, email capture, promo codes</td></tr>
+          <tr><td class="fw-700">PixelMe</td><td>Attribution links, retargeting pixels</td></tr>
+          <tr><td>HeyGen</td><td>AI video for Sponsored Brands (507% CTR lift)</td></tr>
+          <tr><td>Zeely / Arcads</td><td>UGC avatar variants (5x5x5 protocol)</td></tr>
+          <tr><td>Ecomtent</td><td>COSMO Semantic Readiness Score</td></tr>
+          <tr><td>Data Dive</td><td>Organic rank tracking</td></tr>
+          <tr><td>SmartScout</td><td>Market intelligence, competitor monitoring</td></tr>
+          <tr><td>WebBee / AfterShip</td><td>TikTok Shop &harr; Amazon MCF integration</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Services &amp; Partnerships</div>
+      <table>
+        <tbody>
+          <tr><td class="fw-700">USAP Certification Body</td><td>$4K-$10K one-time</td></tr>
+          <tr><td class="fw-700">Creator Connections</td><td>$5K min, commission-only</td></tr>
+          <tr><td class="fw-700">Levanta</td><td>50K+ vetted creators, auto 1099</td></tr>
+          <tr><td class="fw-700">Archer Affiliates</td><td>Performance-based, $0 monthly</td></tr>
+          <tr><td>Tournament Sponsors</td><td>$200-$5K/event, 5-8 events</td></tr>
+          <tr><td>PPR/IPTPA Coaches</td><td>Ambassador program</td></tr>
+          <tr><td>The Dink Newsletter</td><td>Sponsored content</td></tr>
+          <tr><td>Dmantis Sports (Hunan)</td><td>Manufacturing, $0.19-$0.50/ball</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI &amp; Measurement Tools</div>
+    <div class="grid-4">
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">Amazon Attribution</div>
+        <div class="text-xs text-muted">Track external traffic conversion + earn 10% BRB</div>
+      </div>
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">AMC (Marketing Cloud)</div>
+        <div class="text-xs text-muted">Path-to-Purchase, NTB identification, incrementality</div>
+      </div>
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">SQP Dashboard</div>
+        <div class="text-xs text-muted">Post-launch keyword intelligence, hidden gold method</div>
+      </div>
+      <div style="text-align:center;padding:0.8rem;background:var(--bg-card-alt);border-radius:8px;">
+        <div class="fw-700 text-sm">POE / Unmet Demand</div>
+        <div class="text-xs text-muted">Pre-launch niche validation, cluster benchmarking</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 14. RISK MATRIX -->
+<!-- ============================================================ -->
+<div class="section" id="risks">
+  <div class="section-title"><span class="section-number">14</span> Risk Matrix &amp; TOS Compliance</div>
+  <div class="section-subtitle">Tactics rated by risk level with mitigation strategies</div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>Tactic</th><th>Risk</th><th>Notes</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Creator Connections</td>
+          <td><span class="tag tag-green">LOW</span></td>
+          <td>Amazon-native, 2,175% ROAS documented</td>
+          <td>Audit weekly for "Halo Sales" bot loophole (Logie/Oink)</td>
+        </tr>
+        <tr>
+          <td>Brand Referral Bonus / Attribution</td>
+          <td><span class="tag tag-green">LOW</span></td>
+          <td>Amazon-sanctioned, 10% credit</td>
+          <td>Tag every external link properly</td>
+        </tr>
+        <tr>
+          <td>Levanta / Archer Affiliates</td>
+          <td><span class="tag tag-green">LOW</span></td>
+          <td>Off-Amazon API, compliant</td>
+          <td>Monitor ROI weekly, kill underperformers</td>
+        </tr>
+        <tr>
+          <td>Reddit Community Seeding</td>
+          <td><span class="tag tag-green">LOW</span></td>
+          <td>10:1 helpfulness ratio</td>
+          <td>Never promote directly; earn trust first</td>
+        </tr>
+        <tr>
+          <td>Tournament Sponsorship</td>
+          <td><span class="tag tag-green">LOW</span></td>
+          <td>Offline brand building</td>
+          <td>Track via Attribution links at events</td>
+        </tr>
+        <tr>
+          <td>TikTok Shop (platform risk)</td>
+          <td><span class="tag tag-orange">MEDIUM</span></td>
+          <td>Poor support, strict 3-day shipping, ban risk</td>
+          <td>MCF fulfillment, own creator list off-platform</td>
+        </tr>
+        <tr>
+          <td>ManyChat Coupon Funnels</td>
+          <td><span class="tag tag-orange">MEDIUM</span></td>
+          <td>Gray area, platform policy changes</td>
+          <td>Use sparingly, single-use codes only</td>
+        </tr>
+        <tr>
+          <td>AI Sentiment Badges</td>
+          <td><span class="tag tag-orange">MEDIUM</span></td>
+          <td>"Frequently Returned" crushes CTR by 42%</td>
+          <td>Pre-launch spec/imagery audit; monitor 180-day sentiment</td>
+        </tr>
+        <tr>
+          <td>ZonJump / Launch Services</td>
+          <td><span class="tag tag-red">MED-HIGH</span></td>
+          <td>Amazon cracking down on artificial velocity</td>
+          <td>Avoid entirely</td>
+        </tr>
+        <tr>
+          <td>Rebaid / Rebate Platforms</td>
+          <td><span class="tag tag-red">HIGH</span></td>
+          <td>Explicitly banned by Amazon TOS</td>
+          <td class="fw-700 text-red">DO NOT USE</td>
+        </tr>
+        <tr>
+          <td>Search-Find-Buy / 2-Step URLs</td>
+          <td><span class="tag tag-red">HIGH</span></td>
+          <td>Prohibited, leads to ranking collapse</td>
+          <td class="fw-700 text-red">DO NOT USE</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Key Business Risks</div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Stockout during honeymoon</td>
+            <td><span class="tag tag-red">CRITICAL</span></td>
+          </tr>
+          <tr><td colspan="2" class="text-xs text-muted">Ranking recovery takes weeks. Honeymoon benefits lost permanently. Maintain 60-90 day buffer.</td></tr>
+          <tr>
+            <td>Apex retaliatory pricing</td>
+            <td><span class="tag tag-orange">MEDIUM</span></td>
+          </tr>
+          <tr><td colspan="2" class="text-xs text-muted">Apex could drop pricing to defend. Mitigate with S&S lock-in, rotomolded differentiation.</td></tr>
+          <tr>
+            <td>USAP certification delay</td>
+            <td><span class="tag tag-orange">MEDIUM</span></td>
+          </tr>
+          <tr><td colspan="2" class="text-xs text-muted">Certification takes 4-8 weeks. Begin immediately; launch plan depends on it.</td></tr>
+          <tr>
+            <td>TikTok platform instability</td>
+            <td><span class="tag tag-orange">MEDIUM</span></td>
+          </tr>
+          <tr><td colspan="2" class="text-xs text-muted">Own creator lists off-platform. MCF insulates fulfillment. Diversify to YouTube/Instagram.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">TACoS Health Metric (True North)</div>
+      <div class="chart-container" style="height:220px;">
+        <canvas id="tacosTargetChart"></canvas>
+      </div>
+      <div class="text-xs text-muted mt-1" style="text-align:center;">
+        TACoS = ad spend / total revenue. Declining TACoS means organic sales growing faster than ad spend. Target: 8-12% at maturity.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Kestrel Pickleball Balls &mdash; Amazon Launch Strategy &mdash; Board Presentation April 2026</p>
+  <p>Compiled from 32 raw source documents, 8 signal sweeps, SmartScout data (175 ASINs, 33 brands, 624 search terms), and Cerebro keyword extract (4,165 keywords)</p>
+  <p style="margin-top:0.5rem;">Prepared for Kestrel CEO &amp; Board of Directors</p>
+</div>
+
+</div><!-- /container -->
+
+<!-- ============================================================ -->
+<!-- CHARTS -->
+<!-- ============================================================ -->
+<script>
+// Revenue projection chart
+const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revenueCtx, {
+  type: 'line',
+  data: {
+    labels: ['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'],
+    datasets: [
+      {
+        label: 'Aggressive ($1.2M)',
+        data: [15000,35000,65000,95000,120000,140000,130000,110000,100000,95000,90000,100000],
+        borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)',
+        fill: true, tension: 0.3
+      },
+      {
+        label: 'Moderate ($202K)',
+        data: [7500,15000,25000,40000,30000,22000,18000,16000,15000,14000,13000,14000],
+        borderColor: '#2d8cf0', backgroundColor: 'rgba(45,140,240,0.1)',
+        fill: true, tension: 0.3
+      },
+      {
+        label: 'Conservative ($47K)',
+        data: [2000,3500,4500,5000,4800,4500,4200,4000,3800,3700,3500,4000],
+        borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)',
+        fill: true, tension: 0.3
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94a3b8' } } },
+    scales: {
+      y: { ticks: { color: '#64748b', callback: v => '$'+v/1000+'K' }, grid: { color: '#334155' } },
+      x: { ticks: { color: '#64748b' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+// TACoS chart
+const tacosCtx = document.getElementById('tacosChart').getContext('2d');
+new Chart(tacosCtx, {
+  type: 'line',
+  data: {
+    labels: ['M1','M2','M3','M4','M5','M6'],
+    datasets: [{
+      label: 'TACoS %',
+      data: [35,28,20,12,10,8],
+      borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)',
+      fill: true, tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: 'TACoS Trajectory (Moderate)', color: '#f1f5f9' },
+               legend: { display: false } },
+    scales: {
+      y: { ticks: { color: '#64748b', callback: v => v+'%' }, grid: { color: '#334155' }, min: 0, max: 50 },
+      x: { ticks: { color: '#64748b' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+// Organic % chart
+const organicCtx = document.getElementById('organicChart').getContext('2d');
+new Chart(organicCtx, {
+  type: 'line',
+  data: {
+    labels: ['M1','M2','M3','M4','M5','M6'],
+    datasets: [{
+      label: 'Organic % of Sales',
+      data: [15,25,40,50,55,60],
+      borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)',
+      fill: true, tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: 'Organic Sales % (Moderate)', color: '#f1f5f9' },
+               legend: { display: false } },
+    scales: {
+      y: { ticks: { color: '#64748b', callback: v => v+'%' }, grid: { color: '#334155' }, min: 0, max: 80 },
+      x: { ticks: { color: '#64748b' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+// Budget donut chart
+const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+new Chart(budgetCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Inventory','Amazon PPC','External Traffic','Creators/Affiliates','UGC Content','Community','Tools','Certification'],
+    datasets: [{
+      data: [14000,14000,7000,5000,5000,5000,1750,2500],
+      backgroundColor: ['#3b82f6','#22c55e','#a855f7','#f59e0b','#ef4444','#06b6d4','#64748b','#ec4899'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 11 }, padding: 8 } }
+    }
+  }
+});
+
+// TACoS target chart (risk section)
+const tacosTargetCtx = document.getElementById('tacosTargetChart').getContext('2d');
+new Chart(tacosTargetCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Launch (M1-3)','Growth (M4-6)','Mature (M7-12)'],
+    datasets: [{
+      label: 'TACoS Target %',
+      data: [30,12,8],
+      backgroundColor: ['rgba(239,68,68,0.4)','rgba(245,158,11,0.4)','rgba(34,197,94,0.4)'],
+      borderColor: ['#ef4444','#f59e0b','#22c55e'],
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { ticks: { color: '#64748b', callback: v => v+'%' }, grid: { color: '#334155' }, min: 0, max: 40 },
+      x: { ticks: { color: '#64748b' }, grid: { color: '#334155' } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

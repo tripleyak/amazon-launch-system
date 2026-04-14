@@ -1,0 +1,9 @@
+{
+  "name": "pickleball-launch-demo",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Sample Amazon Product Launch Command Center — interactive dashboard for a fictional pickleball brand (Kestrel). Public demo showcasing the structure of a comprehensive launch intelligence package.",
+  "scripts": {
+    "build": "echo 'Static site — no build step'"
+  }
+}

@@ -1,0 +1,10 @@
+.DS_Store
+.vercel
+node_modules
+.env
+.env.local
+*.log
+
+# Sanitization scripts contain real↔fake-name mappings.
+# Keep them local-only; do NOT commit to the public repo.
+scripts/

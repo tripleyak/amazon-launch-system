@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kestrel Pickleball Balls | 12-Month P&L Forecast & 13-Week Cash Flow</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<style>
+:root{--bg:#f8f9fb;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;--light:#94a3b8;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--blue:#3b82f6;--brand:#f97316}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5}
+.nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 1.5rem;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1600px;margin:0 auto;display:flex;align-items:center;height:50px;gap:1rem;overflow-x:auto}
+.nav-brand{font-weight:800;color:var(--brand);white-space:nowrap;font-size:1rem}
+.tab{padding:0.8rem 1rem;font-size:0.82rem;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab:hover{color:var(--text)}.tab.active{color:var(--text);border-bottom-color:var(--brand);font-weight:600}
+.container{max-width:1600px;margin:0 auto;padding:1rem 1.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;overflow-x:auto}
+.card-title{font-weight:700;font-size:0.9rem;margin-bottom:0.5rem}
+.card-sub{font-size:0.75rem;color:var(--muted);margin-bottom:0.75rem}
+table{width:100%;border-collapse:collapse;font-size:0.78rem;white-space:nowrap}
+th{text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:2px solid var(--border);font-size:0.7rem;text-transform:uppercase}
+th:first-child{text-align:left;min-width:200px}
+td{padding:4px 8px;border-bottom:1px solid #f1f5f9;text-align:right}
+td:first-child{text-align:left;font-weight:500}
+tr:hover td{background:rgba(59,130,246,0.02)}
+.section-row td{background:#f8fafc;font-weight:700;border-top:2px solid var(--border);font-size:0.8rem;color:var(--text)}
+.total-row td{background:#f1f5f9;font-weight:800;border-top:2px solid var(--border);border-bottom:2px solid var(--border)}
+.subtotal-row td{font-weight:700;border-top:1px solid var(--border)}
+.neg{color:var(--red)}.pos{color:var(--green)}.bold{font-weight:700}
+.assumption{background:#fffbeb;border:1px solid #fef3c7;border-radius:8px;padding:0.75rem;margin-bottom:1rem;font-size:0.8rem}
+.assumption strong{color:var(--orange)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.kpi{text-align:center;padding:0.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.kpi-val{font-size:1.5rem;font-weight:800;line-height:1.2}
+.kpi-label{font-size:0.7rem;color:var(--muted)}
+.kpi-sub{font-size:0.65rem;color:var(--light)}
+.chart-box{position:relative;height:250px}
+.tab-content{display:none}.tab-content.active{display:block}
+.footer{text-align:center;padding:1.5rem;color:var(--light);font-size:0.7rem;border-top:1px solid var(--border);margin-top:2rem}
+@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+@media print{.nav{display:none}.container{padding:0.5rem}}
+.input-cell{background:#fffbeb;font-weight:600;color:var(--orange)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<span class="nav-brand">Kestrel Financial Model</span>
+<div class="tab active" data-tab="assumptions">Assumptions</div>
+<div class="tab" data-tab="pnl">12-Month P&L</div>
+<div class="tab" data-tab="cashflow">13-Week Cash Flow</div>
+<div class="tab" data-tab="ranking">Ranking Forecast</div>
+<div class="tab" data-tab="charts">Charts</div>
+</div>
+</nav>
+
+<div class="container">
+
+<!-- ======================== ASSUMPTIONS ======================== -->
+<div class="tab-content active" id="tab-assumptions">
+<div class="card">
+<div class="card-title">Product Assumptions (Per Unit)</div>
+<div class="card-sub">Based on SmartScout data, manufacturer quotes (Dmantis), and Amazon fee calculator. EDLP = Everyday Low Price.</div>
+<table>
+<thead><tr><th>SKU</th><th>Pack</th><th>EDLP</th><th>COGS/Pack</th><th>Referral (15%)</th><th>Inbound Fee</th><th>FBA Fee</th><th>Storage/Mo</th><th>Refund Reserve</th><th>Gross Profit</th><th>Gross Margin</th></tr></thead>
+<tbody>
+<tr class="input-cell"><td>PS-OUT-4</td><td>4-pack</td><td>$12.99</td><td>$1.52</td><td>$1.95</td><td>$0.42</td><td>$3.50</td><td>$0.10</td><td>$0.52</td><td class="pos bold">$4.98</td><td class="pos bold">38.3%</td></tr>
+<tr class="input-cell" style="background:#f0fdf4"><td>PS-OUT-12 (HERO)</td><td>12-pack</td><td>$24.99</td><td>$4.56</td><td>$3.75</td><td>$0.56</td><td>$5.20</td><td>$0.15</td><td>$1.00</td><td class="pos bold">$9.77</td><td class="pos bold">39.1%</td></tr>
+<tr class="input-cell"><td>PS-OUT-24</td><td>24-pack</td><td>$44.99</td><td>$9.12</td><td>$6.75</td><td>$0.84</td><td>$7.80</td><td>$0.20</td><td>$1.80</td><td class="pos bold">$18.48</td><td class="pos bold">41.1%</td></tr>
+<tr class="input-cell"><td>PS-OUT-100</td><td>100-pack</td><td>$199.99</td><td>$38.00</td><td>$30.00</td><td>$2.50</td><td>$14.00</td><td>$0.50</td><td>$8.00</td><td class="pos bold">$106.99</td><td class="pos bold">53.5%</td></tr>
+<tr class="input-cell"><td>PS-OUT-6 (Month 4)</td><td>6-pack</td><td>$17.99</td><td>$2.28</td><td>$2.70</td><td>$0.48</td><td>$4.20</td><td>$0.12</td><td>$0.72</td><td class="pos bold">$7.49</td><td class="pos bold">41.6%</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="grid-3">
+<div class="card">
+<div class="card-title">Growth Assumptions</div>
+<table>
+<tbody>
+<tr><td>Month-over-month unit growth</td><td class="input-cell">20%</td></tr>
+<tr><td>Seasonality uplift (Jun-Sep)</td><td class="input-cell">+50%</td></tr>
+<tr><td>Seasonality dip (Nov-Feb)</td><td class="input-cell">-20%</td></tr>
+<tr><td>S&S conversion rate</td><td class="input-cell">20% of buyers</td></tr>
+<tr><td>S&S monthly reorder rate</td><td class="input-cell">75%</td></tr>
+<tr><td>Refund rate</td><td class="input-cell">4%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card">
+<div class="card-title">Marketing Assumptions</div>
+<table>
+<tbody>
+<tr><td>Launch TACoS (Month 1-2)</td><td class="input-cell">35-50%</td></tr>
+<tr><td>Growth TACoS (Month 3-5)</td><td class="input-cell">28-32%</td></tr>
+<tr><td>Mature TACoS (Month 6+)</td><td class="input-cell">22-25%</td></tr>
+<tr><td>External traffic % of ad spend</td><td class="input-cell">30%</td></tr>
+<tr><td>Brand Referral Bonus</td><td class="input-cell">10%</td></tr>
+<tr><td>Creator commission</td><td class="input-cell">15%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card">
+<div class="card-title">Launch Costs (One-Time)</div>
+<table>
+<tbody>
+<tr><td>USAP Certification</td><td class="input-cell">$6,000</td></tr>
+<tr><td>Initial Inventory (FBA)</td><td class="input-cell">$14,000</td></tr>
+<tr><td>UGC Content (5x5x5)</td><td class="input-cell">$5,000</td></tr>
+<tr><td>Photography / A+ Content</td><td class="input-cell">$2,500</td></tr>
+<tr><td>LandingCube + PixelMe Setup</td><td class="input-cell">$500</td></tr>
+<tr><td>Swapt QR Inserts</td><td class="input-cell">$300</td></tr>
+<tr><td><strong>Total Pre-Launch</strong></td><td class="bold">$28,300</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ======================== 12-MONTH P&L ======================== -->
+<div class="tab-content" id="tab-pnl">
+<div class="assumption"><strong>Scenario: Moderate</strong> &mdash; $75K total investment, 20% MoM growth, seasonal adjustments, hero SKU (12-pack) concentration. All figures in USD. Blue cells are inputs; all others calculate.</div>
+
+<div class="card">
+<div class="card-title">Unit Sales Forecast</div>
+<table>
+<thead><tr><th>SKU</th><th>Pre</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th><th>M11</th><th>M12</th><th>Total</th></tr></thead>
+<tbody>
+<tr><td>PS-OUT-4 (4-pack)</td><td>0</td><td>120</td><td>144</td><td>173</td><td>207</td><td>249</td><td>373</td><td>448</td><td>538</td><td>430</td><td>344</td><td>276</td><td>331</td><td class="bold">3,633</td></tr>
+<tr><td>PS-OUT-12 (HERO)</td><td>0</td><td>300</td><td>360</td><td>432</td><td>518</td><td>622</td><td>933</td><td>1,120</td><td>1,344</td><td>1,075</td><td>860</td><td>688</td><td>826</td><td class="bold">9,078</td></tr>
+<tr><td>PS-OUT-24</td><td>0</td><td>40</td><td>48</td><td>58</td><td>69</td><td>83</td><td>125</td><td>149</td><td>179</td><td>143</td><td>115</td><td>92</td><td>110</td><td class="bold">1,211</td></tr>
+<tr><td>PS-OUT-100</td><td>0</td><td>8</td><td>10</td><td>12</td><td>14</td><td>17</td><td>25</td><td>30</td><td>36</td><td>29</td><td>23</td><td>18</td><td>22</td><td class="bold">244</td></tr>
+<tr><td>PS-OUT-6 (launches M4)</td><td>0</td><td>0</td><td>0</td><td>0</td><td>150</td><td>180</td><td>270</td><td>324</td><td>389</td><td>311</td><td>249</td><td>199</td><td>239</td><td class="bold">2,311</td></tr>
+<tr class="total-row"><td>Total Units</td><td>0</td><td>468</td><td>562</td><td>675</td><td>958</td><td>1,151</td><td>1,726</td><td>2,071</td><td>2,486</td><td>1,988</td><td>1,591</td><td>1,273</td><td>1,528</td><td class="bold">16,477</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<div class="card-title">Revenue Forecast</div>
+<table>
+<thead><tr><th></th><th>Pre</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th><th>M11</th><th>M12</th><th>Total</th></tr></thead>
+<tbody>
+<tr><td>PS-OUT-4 @ $12.99</td><td>0</td><td>1,559</td><td>1,871</td><td>2,247</td><td>2,689</td><td>3,234</td><td>4,845</td><td>5,819</td><td>6,989</td><td>5,587</td><td>4,470</td><td>3,585</td><td>4,299</td><td class="bold">47,194</td></tr>
+<tr><td>PS-OUT-12 @ $24.99</td><td>0</td><td>7,497</td><td>8,996</td><td>10,796</td><td>12,945</td><td>15,544</td><td>23,316</td><td>27,989</td><td>33,587</td><td>26,864</td><td>21,491</td><td>17,193</td><td>20,642</td><td class="bold">226,860</td></tr>
+<tr><td>PS-OUT-24 @ $44.99</td><td>0</td><td>1,800</td><td>2,160</td><td>2,609</td><td>3,104</td><td>3,734</td><td>5,624</td><td>6,706</td><td>8,052</td><td>6,434</td><td>5,174</td><td>4,139</td><td>4,949</td><td class="bold">54,485</td></tr>
+<tr><td>PS-OUT-100 @ $199.99</td><td>0</td><td>1,600</td><td>2,000</td><td>2,400</td><td>2,800</td><td>3,400</td><td>5,000</td><td>6,000</td><td>7,200</td><td>5,800</td><td>4,600</td><td>3,600</td><td>4,400</td><td class="bold">48,800</td></tr>
+<tr><td>PS-OUT-6 @ $17.99</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2,699</td><td>3,238</td><td>4,857</td><td>5,829</td><td>6,995</td><td>5,593</td><td>4,479</td><td>3,580</td><td>4,298</td><td class="bold">41,568</td></tr>
+<tr class="total-row"><td>Top Line Revenue</td><td>$0</td><td>$12,456</td><td>$15,027</td><td>$18,052</td><td>$24,237</td><td>$29,150</td><td>$43,642</td><td>$52,343</td><td>$62,823</td><td>$50,278</td><td>$40,214</td><td>$32,097</td><td>$38,588</td><td class="bold">$418,907</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<div class="card-title">Cost of Goods Sold</div>
+<table>
+<thead><tr><th></th><th>Pre</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th><th>M11</th><th>M12</th><th>Total</th></tr></thead>
+<tbody>
+<tr><td>Product COGS (all SKUs)</td><td>14,000</td><td>2,346</td><td>2,815</td><td>3,378</td><td>4,842</td><td>5,810</td><td>8,716</td><td>10,459</td><td>12,551</td><td>10,041</td><td>8,032</td><td>6,426</td><td>7,711</td><td class="bold">97,127</td></tr>
+<tr><td>Amazon Referral Fee (15%)</td><td>0</td><td>1,868</td><td>2,254</td><td>2,708</td><td>3,636</td><td>4,373</td><td>6,546</td><td>7,851</td><td>9,423</td><td>7,542</td><td>6,032</td><td>4,815</td><td>5,788</td><td class="bold">62,836</td></tr>
+<tr><td>FBA Fulfillment Fee</td><td>0</td><td>2,308</td><td>2,770</td><td>3,324</td><td>4,943</td><td>5,931</td><td>8,897</td><td>10,676</td><td>12,812</td><td>10,250</td><td>8,200</td><td>6,560</td><td>7,872</td><td class="bold">84,543</td></tr>
+<tr><td>FBA Inbound Fee</td><td>0</td><td>262</td><td>315</td><td>378</td><td>555</td><td>666</td><td>999</td><td>1,199</td><td>1,439</td><td>1,151</td><td>921</td><td>737</td><td>884</td><td class="bold">9,506</td></tr>
+<tr><td>Storage Fees</td><td>0</td><td>62</td><td>74</td><td>89</td><td>130</td><td>156</td><td>234</td><td>280</td><td>336</td><td>269</td><td>215</td><td>172</td><td>207</td><td class="bold">2,224</td></tr>
+<tr><td>Refund Reserve (4%)</td><td>0</td><td>498</td><td>601</td><td>722</td><td>969</td><td>1,166</td><td>1,746</td><td>2,094</td><td>2,513</td><td>2,011</td><td>1,609</td><td>1,284</td><td>1,544</td><td class="bold">16,757</td></tr>
+<tr class="subtotal-row"><td>Total COGS + Amazon Fees</td><td>$14,000</td><td>$7,344</td><td>$8,829</td><td>$10,599</td><td>$15,075</td><td>$18,102</td><td>$27,138</td><td>$32,559</td><td>$39,074</td><td>$31,264</td><td>$25,009</td><td>$19,994</td><td>$24,006</td><td class="bold">$272,993</td></tr>
+<tr class="subtotal-row"><td>Gross Profit</td><td class="neg">-$14,000</td><td>$5,112</td><td>$6,198</td><td>$7,453</td><td>$9,162</td><td>$11,048</td><td>$16,504</td><td>$19,784</td><td>$23,749</td><td>$19,014</td><td>$15,205</td><td>$12,103</td><td>$14,582</td><td class="bold">$145,914</td></tr>
+<tr><td>Gross Margin %</td><td></td><td>41.0%</td><td>41.2%</td><td>41.3%</td><td>37.8%</td><td>37.9%</td><td>37.8%</td><td>37.8%</td><td>37.8%</td><td>37.8%</td><td>37.8%</td><td>37.7%</td><td>37.8%</td><td class="bold">34.8%</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<div class="card-title">Marketing & Operating Expenses</div>
+<table>
+<thead><tr><th></th><th>Pre</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th><th>M11</th><th>M12</th><th>Total</th></tr></thead>
+<tbody>
+<tr class="section-row"><td colspan="15">Advertising</td></tr>
+<tr><td>Amazon PPC (SP/SB/SD)</td><td>0</td><td>4,984</td><td>5,259</td><td>5,415</td><td>7,271</td><td>8,143</td><td>10,911</td><td>12,561</td><td>15,082</td><td>12,569</td><td>10,053</td><td>8,024</td><td>9,647</td><td class="bold">109,919</td></tr>
+<tr><td>External Traffic (TikTok/Meta/Google)</td><td>0</td><td>2,500</td><td>2,500</td><td>2,000</td><td>2,000</td><td>2,000</td><td>2,500</td><td>2,500</td><td>2,500</td><td>2,000</td><td>1,500</td><td>1,500</td><td>1,500</td><td class="bold">25,000</td></tr>
+<tr><td>Amazon DSP</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1,000</td><td>1,500</td><td>1,500</td><td>1,500</td><td>1,500</td><td>1,000</td><td>1,000</td><td>1,000</td><td class="bold">10,000</td></tr>
+<tr class="section-row"><td colspan="15">Launch Programs</td></tr>
+<tr><td>Sellico / Buyer Networks</td><td>0</td><td>2,500</td><td>500</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="bold">3,000</td></tr>
+<tr><td>Creator Connections + Affiliates</td><td>0</td><td>0</td><td>2,500</td><td>2,500</td><td>2,500</td><td>2,000</td><td>2,000</td><td>1,500</td><td>1,500</td><td>1,500</td><td>1,000</td><td>1,000</td><td>1,000</td><td class="bold">19,000</td></tr>
+<tr><td>TikTok Shop Blitz (Creators)</td><td>0</td><td>5,000</td><td>1,000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="bold">6,000</td></tr>
+<tr class="section-row"><td colspan="15">Content & Community</td></tr>
+<tr><td>UGC / Content Creation</td><td>5,000</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td class="bold">11,000</td></tr>
+<tr><td>CrowdReply + GEO</td><td>0</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td class="bold">2,400</td></tr>
+<tr><td>Tournament / Community</td><td>0</td><td>500</td><td>1,000</td><td>1,000</td><td>1,000</td><td>1,000</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td class="bold">8,000</td></tr>
+<tr><td>Press Release / PR</td><td>0</td><td>500</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="bold">500</td></tr>
+<tr class="section-row"><td colspan="15">Fixed / Overhead</td></tr>
+<tr><td>USAP Certification</td><td>6,000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="bold">6,000</td></tr>
+<tr><td>Software & Tools (Helium10, etc.)</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td class="bold">3,900</td></tr>
+<tr><td>Photography / A+ / Listing</td><td>2,500</td><td>0</td><td>0</td><td>0</td><td>500</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="bold">3,000</td></tr>
+<tr><td>Coupons ($0.60/redeem + disc)</td><td>0</td><td>1,500</td><td>1,200</td><td>1,000</td><td>1,200</td><td>1,000</td><td>2,500</td><td>800</td><td>800</td><td>800</td><td>800</td><td>800</td><td>800</td><td class="bold">13,200</td></tr>
+<tr><td>Lightning Deals + 7-Day Deals</td><td>0</td><td>0</td><td>200</td><td>300</td><td>300</td><td>300</td><td>600</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td class="bold">2,900</td></tr>
+<tr><td>Brand Tailored Promos (disc only)</td><td>0</td><td>800</td><td>600</td><td>500</td><td>600</td><td>500</td><td>1,000</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td class="bold">6,400</td></tr>
+<tr><td>PED + S&S Discounts</td><td>0</td><td>0</td><td>200</td><td>400</td><td>500</td><td>600</td><td>700</td><td>600</td><td>600</td><td>600</td><td>600</td><td>600</td><td>600</td><td class="bold">6,000</td></tr>
+<tr class="total-row"><td>Total OpEx + Marketing</td><td>$13,800</td><td>$17,452</td><td>$14,321</td><td>$12,590</td><td>$15,229</td><td>$16,294</td><td>$20,137</td><td>$21,632</td><td>$24,568</td><td>$21,057</td><td>$16,644</td><td>$14,297</td><td>$16,175</td><td class="bold">$224,196</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<div class="card-title">Net Profit & Loss</div>
+<table>
+<thead><tr><th></th><th>Pre</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th><th>M11</th><th>M12</th><th>Total</th></tr></thead>
+<tbody>
+<tr><td>Revenue</td><td>$0</td><td>$12,456</td><td>$15,027</td><td>$18,052</td><td>$24,237</td><td>$29,150</td><td>$43,642</td><td>$52,343</td><td>$62,823</td><td>$50,278</td><td>$40,214</td><td>$32,097</td><td>$38,588</td><td class="bold">$418,907</td></tr>
+<tr><td>COGS + Amazon Fees</td><td>($14,000)</td><td>($7,344)</td><td>($8,829)</td><td>($10,599)</td><td>($15,075)</td><td>($18,102)</td><td>($27,138)</td><td>($32,559)</td><td>($39,074)</td><td>($31,264)</td><td>($25,009)</td><td>($19,994)</td><td>($24,006)</td><td class="bold neg">($272,993)</td></tr>
+<tr><td>Gross Profit</td><td class="neg">($14,000)</td><td>$5,112</td><td>$6,198</td><td>$7,453</td><td>$9,162</td><td>$11,048</td><td>$16,504</td><td>$19,784</td><td>$23,749</td><td>$19,014</td><td>$15,205</td><td>$12,103</td><td>$14,582</td><td class="bold">$145,914</td></tr>
+<tr><td>OpEx + Marketing</td><td>($13,800)</td><td>($17,452)</td><td>($14,321)</td><td>($12,590)</td><td>($15,229)</td><td>($16,294)</td><td>($20,137)</td><td>($21,632)</td><td>($24,568)</td><td>($21,057)</td><td>($16,644)</td><td>($14,297)</td><td>($16,175)</td><td class="bold neg">($224,196)</td></tr>
+<tr><td>Brand Referral Bonus (10% ext.)</td><td>$0</td><td>$374</td><td>$451</td><td>$542</td><td>$727</td><td>$875</td><td>$1,309</td><td>$1,570</td><td>$1,885</td><td>$1,508</td><td>$1,206</td><td>$964</td><td>$1,158</td><td class="bold pos">$12,569</td></tr>
+<tr class="total-row"><td>Net Profit / (Loss)</td><td class="neg bold">($27,800)</td><td class="neg bold">($11,966)</td><td class="neg bold">($7,672)</td><td class="neg bold">($4,595)</td><td class="neg bold">($5,340)</td><td class="neg bold">($4,171)</td><td class="neg bold">($2,324)</td><td class="neg bold">($278)</td><td class="pos bold">$1,066</td><td class="neg bold">($535)</td><td class="neg bold">($233)</td><td class="neg bold">($1,230)</td><td class="neg bold">($435)</td><td class="neg bold">($65,713)</td></tr>
+<tr><td>Net Margin %</td><td></td><td class="neg">-96.1%</td><td class="neg">-51.1%</td><td class="neg">-25.5%</td><td class="neg">-22.0%</td><td class="neg">-14.3%</td><td class="neg">-5.3%</td><td class="neg">-0.5%</td><td class="pos">1.7%</td><td class="neg">-1.1%</td><td class="neg">-0.6%</td><td class="neg">-3.8%</td><td class="neg">-1.1%</td><td class="neg bold">-15.7%</td></tr>
+<tr><td>TACoS</td><td></td><td class="neg">50%</td><td class="neg">45%</td><td class="neg">35%</td><td class="neg">32%</td><td class="neg">30%</td><td class="orange">25%</td><td class="orange">25%</td><td class="orange">25%</td><td class="orange">25%</td><td class="orange">25%</td><td class="orange">25%</td><td class="orange">25%</td><td class="bold">28.8%</td></tr>
+<tr><td>Cumulative Net P&L</td><td class="neg">($27,800)</td><td class="neg">($39,766)</td><td class="neg">($47,438)</td><td class="neg">($52,033)</td><td class="neg">($57,373)</td><td class="neg">($61,544)</td><td class="neg">($63,868)</td><td class="neg">($64,146)</td><td class="neg">($63,080)</td><td class="neg">($63,615)</td><td class="neg">($63,848)</td><td class="neg">($65,078)</td><td class="neg">($65,513)</td><td></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="grid-3">
+<div class="kpi" style="border-left:3px solid var(--blue)"><div class="kpi-val" style="color:var(--blue)">$418,907</div><div class="kpi-label">Year 1 Revenue</div></div>
+<div class="kpi" style="border-left:3px solid var(--orange)"><div class="kpi-val" style="color:var(--orange)">Month 8</div><div class="kpi-label">First Positive Month</div></div>
+<div class="kpi" style="border-left:3px solid var(--red)"><div class="kpi-val" style="color:var(--red)">-$65,513</div><div class="kpi-label">Year 1 Net (at 25% TACoS)</div><div class="kpi-sub">Breakeven requires TACoS &lt;20% or higher volume</div></div>
+</div>
+</div>
+
+<!-- ======================== 13-WEEK CASH FLOW ======================== -->
+<div class="tab-content" id="tab-cashflow">
+<div class="assumption"><strong>13-Week Cash Flow Model</strong> &mdash; Covers the first 13 weeks of active selling (Month 1-3). Starting cash: $75,000. Amazon pays every 14 days.</div>
+
+<div class="card">
+<div class="card-title">13-Week Cash Flow (Launch Period)</div>
+<table>
+<thead><tr><th>Line Item</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th>W5</th><th>W6</th><th>W7</th><th>W8</th><th>W9</th><th>W10</th><th>W11</th><th>W12</th><th>W13</th></tr></thead>
+<tbody>
+<tr class="section-row"><td>CASH INFLOWS</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Amazon Disbursement</td><td>0</td><td>0</td><td>2,100</td><td>2,400</td><td>2,800</td><td>3,200</td><td>3,500</td><td>3,800</td><td>4,100</td><td>4,400</td><td>4,700</td><td>5,000</td><td>5,300</td></tr>
+<tr><td>TikTok Shop Revenue</td><td>0</td><td>1,500</td><td>800</td><td>400</td><td>300</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td></tr>
+<tr><td>DTC / Shopify Revenue</td><td>0</td><td>0</td><td>200</td><td>200</td><td>300</td><td>300</td><td>300</td><td>400</td><td>400</td><td>400</td><td>400</td><td>500</td><td>500</td></tr>
+<tr class="subtotal-row"><td>Total Cash In</td><td>0</td><td>1,500</td><td>3,100</td><td>3,000</td><td>3,400</td><td>3,700</td><td>4,000</td><td>4,400</td><td>4,700</td><td>5,000</td><td>5,300</td><td>5,700</td><td>6,000</td></tr>
+<tr class="section-row"><td>CASH OUTFLOWS</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Amazon PPC</td><td>500</td><td>700</td><td>800</td><td>900</td><td>900</td><td>900</td><td>900</td><td>900</td><td>850</td><td>850</td><td>800</td><td>800</td><td>750</td></tr>
+<tr><td>External Traffic Ads</td><td>400</td><td>800</td><td>600</td><td>500</td><td>500</td><td>500</td><td>500</td><td>500</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td></tr>
+<tr><td>Sellico / Buyer Networks</td><td>1,500</td><td>1,000</td><td>500</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>TikTok Blitz (Creators)</td><td>3,000</td><td>2,000</td><td>500</td><td>250</td><td>250</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>Creator Connections/Affiliates</td><td>0</td><td>0</td><td>0</td><td>0</td><td>500</td><td>500</td><td>500</td><td>500</td><td>600</td><td>600</td><td>600</td><td>600</td><td>600</td></tr>
+<tr><td>Content / UGC / PR</td><td>500</td><td>300</td><td>200</td><td>200</td><td>150</td><td>150</td><td>125</td><td>125</td><td>125</td><td>125</td><td>125</td><td>125</td><td>125</td></tr>
+<tr><td>Community / Tournaments</td><td>200</td><td>200</td><td>200</td><td>200</td><td>250</td><td>250</td><td>250</td><td>250</td><td>250</td><td>250</td><td>250</td><td>250</td><td>250</td></tr>
+<tr><td>Software & Tools</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td><td>75</td></tr>
+<tr><td>Inventory Restock</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>7,000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>7,000</td><td>0</td></tr>
+<tr class="subtotal-row"><td>Total Cash Out</td><td>6,175</td><td>5,075</td><td>2,875</td><td>2,125</td><td>2,625</td><td>2,375</td><td>9,350</td><td>2,350</td><td>2,300</td><td>2,300</td><td>2,250</td><td>9,250</td><td>2,200</td></tr>
+<tr class="total-row"><td>Weekly Net Cash Flow</td><td class="neg">-6,175</td><td class="neg">-3,575</td><td class="pos">225</td><td class="pos">875</td><td class="pos">775</td><td class="pos">1,325</td><td class="neg">-5,350</td><td class="pos">2,050</td><td class="pos">2,400</td><td class="pos">2,700</td><td class="pos">3,050</td><td class="neg">-3,550</td><td class="pos">3,800</td></tr>
+<tr class="total-row"><td>Ending Cash Balance</td><td>40,525</td><td>36,950</td><td>37,175</td><td>38,050</td><td>38,825</td><td>40,150</td><td>34,800</td><td>36,850</td><td>39,250</td><td>41,950</td><td>45,000</td><td>41,450</td><td>45,250</td></tr>
+</tbody>
+</table>
+<div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;">Starting cash: $75,000 minus $28,300 pre-launch costs minus $14,000 initial inventory = $32,700 available at Week 1. Amazon pays biweekly with ~14-day hold. TikTok Shop pays ~8 days after delivery.</div>
+</div>
+</div>
+
+<!-- ======================== RANKING FORECAST ======================== -->
+<div class="tab-content" id="tab-ranking">
+<div class="card">
+<div class="card-title">Ranking Cost Forecast (Hero Keywords)</div>
+<div class="card-sub">Estimated daily unit sales needed to rank on Page 1 for target keywords, with cost projections based on category CPCs.</div>
+<table>
+<thead><tr><th>Search Term</th><th>Monthly Vol</th><th>Ranking ASP</th><th>Daily Units to Rank</th><th>Per Unit Ad Cost</th><th>Daily Ad Cost</th><th>Est. Daily Sales Post-Rank</th><th>Monthly Units Post-Rank</th><th>Monthly Cost to Rank</th><th>Monthly Revenue Post-Rank</th><th>ROI</th><th>Ranking ACoS</th><th>Ranking CPA</th></tr></thead>
+<tbody>
+<tr><td class="bold">pickleball balls</td><td>70,744</td><td>$24.99</td><td>15</td><td>$18.00</td><td>$270</td><td>35</td><td>1,050</td><td>$8,100</td><td>$26,240</td><td>3.24x</td><td>30.9%</td><td>$7.71</td></tr>
+<tr><td class="bold">outdoor pickleball balls</td><td>8,489</td><td>$24.99</td><td>8</td><td>$12.00</td><td>$96</td><td>18</td><td>540</td><td>$2,880</td><td>$13,495</td><td>4.69x</td><td>21.3%</td><td>$5.33</td></tr>
+<tr><td class="bold">pickleball balls outdoor</td><td>6,800</td><td>$24.99</td><td>6</td><td>$10.00</td><td>$60</td><td>15</td><td>450</td><td>$1,800</td><td>$11,246</td><td>6.25x</td><td>16.0%</td><td>$4.00</td></tr>
+<tr><td class="bold">pickleball set</td><td>46,170</td><td>$24.99</td><td>12</td><td>$15.00</td><td>$180</td><td>25</td><td>750</td><td>$5,400</td><td>$18,743</td><td>3.47x</td><td>28.8%</td><td>$7.20</td></tr>
+<tr><td>pickleball practice equipment</td><td>5,055</td><td>$24.99</td><td>5</td><td>$8.00</td><td>$40</td><td>12</td><td>360</td><td>$1,200</td><td>$8,996</td><td>7.50x</td><td>13.3%</td><td>$3.33</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<div class="card-title">Review Milestone Impact on Conversion</div>
+<table>
+<thead><tr><th>Reviews</th><th>Est. CVR Lift</th><th>Timeline</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>0 reviews</td><td>Baseline (2-3% CVR)</td><td>Day 0</td><td>Cold start</td></tr>
+<tr><td>5-10 reviews (4.5+ stars)</td><td>+30-50% CVR</td><td>Week 2</td><td>Vine + F&F</td></tr>
+<tr><td>25 reviews</td><td>+80-100% CVR</td><td>Week 3-4</td><td>Vine + Swapt + organic</td></tr>
+<tr><td>50 reviews</td><td>+120-150% CVR</td><td>Week 5-6</td><td>Multi-layer strategy</td></tr>
+<tr><td>100+ reviews</td><td>+150-200% CVR (diminishing)</td><td>Month 3</td><td>Organic + S&S + Request</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ======================== CHARTS ======================== -->
+<div class="tab-content" id="tab-charts">
+<div class="grid-2">
+<div class="card"><div class="card-title">Monthly Revenue & Net Profit</div><div class="chart-box"><canvas id="revProfitChart"></canvas></div></div>
+<div class="card"><div class="card-title">Cumulative P&L</div><div class="chart-box"><canvas id="cumChart"></canvas></div></div>
+</div>
+<div class="grid-2">
+<div class="card"><div class="card-title">TACoS & Organic % Trajectory</div><div class="chart-box"><canvas id="tacosChart"></canvas></div></div>
+<div class="card"><div class="card-title">13-Week Ending Cash Balance</div><div class="chart-box"><canvas id="cashChart"></canvas></div></div>
+</div>
+</div>
+
+<div class="footer">Kestrel Pickleball Balls &mdash; Financial Forecast &mdash; April 2026 &mdash; Moderate Scenario ($75K Investment)</div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById('tab-'+t.dataset.tab).classList.add('active')})});
+
+const months=['Pre','M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'];
+const rev=[0,12456,15027,18052,24237,29150,43642,52343,62823,50278,40214,32097,38588];
+const net=[-27800,-11966,-7672,-4595,-5340,-4171,-2324,-278,1066,-535,-233,-1230,-435];
+const cum=[-27800,-39766,-47438,-52033,-57373,-61544,-63868,-64146,-63080,-63615,-63848,-65078,-65513];
+
+new Chart(document.getElementById('revProfitChart'),{type:'bar',data:{labels:months,datasets:[{label:'Revenue',data:rev,backgroundColor:'rgba(59,130,246,0.3)',borderColor:'#3b82f6',borderWidth:1},{label:'Net Profit',data:net,backgroundColor:net.map(v=>v<0?'rgba(239,68,68,0.3)':'rgba(34,197,94,0.3)'),borderColor:net.map(v=>v<0?'#ef4444':'#22c55e'),borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>'$'+Math.round(v/1000)+'K'},grid:{color:'#f1f5f9'}},x:{grid:{display:false}}},plugins:{legend:{labels:{font:{size:11}}}}}});
+
+new Chart(document.getElementById('cumChart'),{type:'line',data:{labels:months,datasets:[{label:'Cumulative P&L',data:cum,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',fill:true,tension:0.3,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>'$'+Math.round(v/1000)+'K'},grid:{color:'#f1f5f9'}},x:{grid:{display:false}}},plugins:{legend:{display:false},annotation:{annotations:{breakeven:{type:'line',yMin:0,yMax:0,borderColor:'#22c55e',borderDash:[5,5]}}}}}});
+
+new Chart(document.getElementById('tacosChart'),{type:'line',data:{labels:months.slice(1),datasets:[{label:'TACoS %',data:[50,45,35,32,30,25,25,25,25,25,25,25],borderColor:'#f59e0b',tension:0.3},{label:'Organic %',data:[15,20,30,35,42,48,50,52,55,58,60,62],borderColor:'#22c55e',tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'#f1f5f9'},min:0,max:70},x:{grid:{display:false}}},plugins:{legend:{labels:{font:{size:11}}}}}});
+
+const weeks=['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12','W13'];
+const cash=[40525,36950,37175,38050,38825,40150,34800,36850,39250,41950,45000,41450,45250];
+new Chart(document.getElementById('cashChart'),{type:'line',data:{labels:weeks,datasets:[{label:'Cash Balance',data:cash,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>'$'+Math.round(v/1000)+'K'},grid:{color:'#f1f5f9'},min:25000},x:{grid:{display:false}}},plugins:{legend:{display:false}}}});
+</script>
+</body>
+</html>

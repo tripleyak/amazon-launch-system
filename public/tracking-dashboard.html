@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kestrel Pickleball | Competitive Intelligence & Launch Tracking Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --bg-card: #ffffff;
+    --bg-dark: #1e293b;
+    --border: #e2e8f0;
+    --border-dark: #cbd5e1;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --green: #22c55e;
+    --green-bg: #dcfce7;
+    --orange: #f59e0b;
+    --orange-bg: #fef3c7;
+    --red: #ef4444;
+    --red-bg: #fee2e2;
+    --blue: #3b82f6;
+    --blue-bg: #dbeafe;
+    --purple: #8b5cf6;
+    --purple-bg: #ede9fe;
+    --teal: #14b8a6;
+    --teal-bg: #ccfbf1;
+    --brand: #f97316;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; font-size: 14px; }
+
+  /* Nav */
+  .nav { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 2rem; position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 1500px; margin: 0 auto; display: flex; align-items: center; height: 56px; gap: 1.5rem; overflow-x: auto; }
+  .nav-brand { font-weight: 800; font-size: 1.1rem; color: var(--brand); white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
+  .nav-brand svg { width: 24px; height: 24px; }
+  .nav a { color: var(--text-secondary); text-decoration: none; font-size: 0.82rem; padding: 0.4rem 0.7rem; border-radius: 6px; white-space: nowrap; font-weight: 500; }
+  .nav a:hover, .nav a.active { color: var(--text); background: var(--bg); }
+  .nav-tabs { display: flex; gap: 0; border-bottom: 2px solid transparent; }
+  .nav-tab { padding: 1rem 1rem; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--text); border-bottom-color: var(--brand); font-weight: 600; }
+
+  .container { max-width: 1500px; margin: 0 auto; padding: 1.5rem 2rem; }
+
+  /* Cards */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+  .card-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .card-subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem; }
+
+  /* Grids */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+  @media (max-width: 1000px) { .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; } }
+
+  /* Score Ring */
+  .score-ring { position: relative; width: 120px; height: 120px; }
+  .score-ring-value { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5rem; font-weight: 800; }
+  .score-ring-label { text-align: center; font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+
+  /* Score Bars */
+  .score-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 36px; height: 26px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;
+    padding: 0 6px;
+  }
+  .score-85 { background: #dcfce7; color: #15803d; }
+  .score-70 { background: #fef3c7; color: #a16207; }
+  .score-55 { background: #fed7aa; color: #c2410c; }
+  .score-low { background: #fee2e2; color: #dc2626; }
+
+  /* KPI */
+  .kpi { text-align: center; padding: 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
+  .kpi-value { font-size: 1.8rem; font-weight: 800; line-height: 1.2; }
+  .kpi-label { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; }
+  .kpi-sub { font-size: 0.7rem; color: var(--text-muted); }
+  .kpi-conf { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { text-align: left; padding: 0.5rem 0.6rem; color: var(--text-secondary); font-weight: 600; border-bottom: 2px solid var(--border); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+  td { padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(59,130,246,0.03); }
+  .highlight-row td { background: rgba(249,115,22,0.06); }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--text); }
+
+  /* Tags */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; }
+  .tag-green { background: var(--green-bg); color: #15803d; }
+  .tag-orange { background: var(--orange-bg); color: #a16207; }
+  .tag-red { background: var(--red-bg); color: #dc2626; }
+  .tag-blue { background: var(--blue-bg); color: #1d4ed8; }
+  .tag-purple { background: var(--purple-bg); color: #7c3aed; }
+  .tag-teal { background: var(--teal-bg); color: #0d9488; }
+
+  /* Bars */
+  .bar { height: 6px; border-radius: 3px; background: #e2e8f0; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+
+  /* Opportunity cells */
+  .opp-cell { padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border); }
+  .opp-high { border-left: 3px solid var(--green); }
+  .opp-med { border-left: 3px solid var(--orange); }
+  .opp-low { border-left: 3px solid var(--text-muted); }
+
+  /* Charts */
+  .chart-container { position: relative; height: 260px; }
+  .chart-container-sm { position: relative; height: 200px; }
+
+  /* Section */
+  .section { margin-bottom: 2rem; scroll-margin-top: 70px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .section-title { font-size: 1.15rem; font-weight: 700; }
+  .section-badge { font-size: 0.7rem; background: var(--blue-bg); color: #1d4ed8; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
+  /* Callout */
+  .callout { border-left: 3px solid var(--blue); padding: 0.75rem 1rem; background: rgba(59,130,246,0.05); border-radius: 0 8px 8px 0; margin: 0.75rem 0; font-size: 0.85rem; }
+  .callout.green { border-color: var(--green); background: rgba(34,197,94,0.05); }
+  .callout.orange { border-color: var(--orange); background: rgba(245,158,11,0.05); }
+  .callout.red { border-color: var(--red); background: rgba(239,68,68,0.05); }
+
+  .text-green { color: var(--green); }
+  .text-orange { color: var(--orange); }
+  .text-red { color: var(--red); }
+  .text-blue { color: var(--blue); }
+  .text-muted { color: var(--text-muted); }
+  .text-sm { font-size: 0.82rem; }
+  .text-xs { font-size: 0.72rem; }
+  .fw-700 { font-weight: 700; }
+  .mt-1 { margin-top: 1rem; }
+  .mb-1 { margin-bottom: 1rem; }
+
+  /* Print */
+  @media print { .nav { display: none; } .container { padding-top: 0.5rem; } }
+
+  /* Tabs content */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Status dot */
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .status-green { background: var(--green); }
+  .status-orange { background: var(--orange); }
+  .status-red { background: var(--red); }
+
+  /* Heatmap cell */
+  .heat-high { background: rgba(34,197,94,0.15); }
+  .heat-med { background: rgba(245,158,11,0.12); }
+  .heat-low { background: rgba(239,68,68,0.1); }
+  .heat-none { background: transparent; }
+
+  .footer { text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.72rem; border-top: 1px solid var(--border); margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Kestrel Tracker
+    </span>
+    <div class="nav-tabs">
+      <div class="nav-tab active" data-tab="scorecard">Scorecard</div>
+      <div class="nav-tab" data-tab="competitive">Competitive Landscape</div>
+      <div class="nav-tab" data-tab="keywords">Keyword Gaps</div>
+      <div class="nav-tab" data-tab="sqp">SQP & Impression Share</div>
+      <div class="nav-tab" data-tab="poe">POE Convergence</div>
+      <div class="nav-tab" data-tab="adspend">Ad Spend Opportunities</div>
+      <div class="nav-tab" data-tab="catalog">Product Catalog</div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- TAB 1: SCORECARD -->
+<!-- ============================================================ -->
+<div class="tab-content active" id="tab-scorecard">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Kestrel Pickleball Balls</div>
+        <div class="text-xs text-muted">5 SKUs tracked &bull; 7 competitors tracked &bull; 624 search terms &bull; Scored Apr 8, 2026</div>
+      </div>
+      <span class="section-badge">LAUNCH TRACKING</span>
+    </div>
+
+    <div class="grid-2">
+      <!-- Brand Score Ring -->
+      <div class="card" style="display:flex;align-items:center;gap:2rem;">
+        <div>
+          <div style="position:relative;width:130px;height:130px;">
+            <canvas id="scoreRing"></canvas>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+              <div style="font-size:2.8rem;font-weight:800;color:var(--text);">—</div>
+              <div style="font-size:0.7rem;color:var(--text-muted);">PRE-LAUNCH</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:1.3rem;font-weight:700;">Kestrel Pickleball</div>
+          <div class="text-xs text-muted mb-1">Pre-launch — no live ASINs scored yet</div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <span class="tag tag-orange">PRE-LAUNCH</span>
+            <span class="tag tag-blue">5 SKUs PLANNED</span>
+            <span class="tag tag-teal">USAP CERT PENDING</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dimension Scores -->
+      <div class="card">
+        <div class="grid-5">
+          <div class="kpi">
+            <div class="kpi-value text-orange">—</div>
+            <div class="kpi-label">Findability</div>
+            <div class="kpi-sub">Organic + PPC visibility</div>
+            <div class="bar mt-1"><div class="bar-fill" style="width:0%;background:var(--orange);"></div></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value text-green">89</div>
+            <div class="kpi-label">Conversion</div>
+            <div class="kpi-sub">Projected from unit econ</div>
+            <div class="bar mt-1"><div class="bar-fill" style="width:89%;background:var(--green);"></div></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value text-green">92</div>
+            <div class="kpi-label">Price</div>
+            <div class="kpi-sub">Mid-tier gap advantage</div>
+            <div class="bar mt-1"><div class="bar-fill" style="width:92%;background:var(--green);"></div></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value text-blue">—</div>
+            <div class="kpi-label">Availability</div>
+            <div class="kpi-sub">FBA inventory pending</div>
+            <div class="bar mt-1"><div class="bar-fill" style="width:0%;background:var(--blue);"></div></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-value" style="color:var(--text-muted);">—</div>
+            <div class="kpi-label">Overall</div>
+            <div class="kpi-sub">Scores post-launch</div>
+            <div class="bar mt-1"><div class="bar-fill" style="width:0%;background:var(--text-muted);"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Launch Status KPIs -->
+    <div class="grid-4 mt-1">
+      <div class="kpi" style="border-left:3px solid var(--green);">
+        <div class="kpi-value">$946K</div>
+        <div class="kpi-label">Monthly Category Revenue</div>
+        <div class="kpi-sub">~$11.4M annual</div>
+      </div>
+      <div class="kpi" style="border-left:3px solid var(--orange);">
+        <div class="kpi-value">79%</div>
+        <div class="kpi-label">Apex Market Share</div>
+        <div class="kpi-sub">+13.5% share change</div>
+      </div>
+      <div class="kpi" style="border-left:3px solid var(--blue);">
+        <div class="kpi-value">175</div>
+        <div class="kpi-label">Category ASINs</div>
+        <div class="kpi-sub">33 brands</div>
+      </div>
+      <div class="kpi" style="border-left:3px solid var(--purple);">
+        <div class="kpi-value">624</div>
+        <div class="kpi-label">Tracked Search Terms</div>
+        <div class="kpi-sub">4,165 Cerebro keywords</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 2: COMPETITIVE LANDSCAPE -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-competitive">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Competitive Landscape</div>
+      <span class="text-xs text-muted">8 brands &bull; Scored from SmartScout Apr 2026</span>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Sellers</th>
+            <th class="sortable">Overall &#x25BC;</th>
+            <th>Findability</th>
+            <th>Conversion</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Confidence</th>
+            <th>Share</th>
+            <th>Share &Delta;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw-700">Apex Sports</td><td>1 (Amazon 1P)</td>
+            <td><span class="score-pill score-85">95</span></td>
+            <td><span class="score-pill score-85">98</span></td>
+            <td><span class="score-pill score-85">92</span></td>
+            <td><span class="score-pill score-70">72</span></td>
+            <td><span class="score-pill score-85">100</span></td>
+            <td class="text-muted">95%</td>
+            <td class="fw-700">79.0%</td>
+            <td class="text-green fw-700">+13.5%</td>
+          </tr>
+          <tr>
+            <td class="fw-700">cyclotron</td><td>1</td>
+            <td><span class="score-pill score-55">48</span></td>
+            <td><span class="score-pill score-55">42</span></td>
+            <td><span class="score-pill score-70">68</span></td>
+            <td><span class="score-pill score-85">88</span></td>
+            <td><span class="score-pill score-55">52</span></td>
+            <td class="text-muted">45%</td>
+            <td>2.6%</td>
+            <td class="text-red">-1.1%</td>
+          </tr>
+          <tr>
+            <td class="fw-700">Navona</td><td>1</td>
+            <td><span class="score-pill score-55">46</span></td>
+            <td><span class="score-pill score-55">38</span></td>
+            <td><span class="score-pill score-70">65</span></td>
+            <td><span class="score-pill score-85">85</span></td>
+            <td><span class="score-pill score-55">55</span></td>
+            <td class="text-muted">42%</td>
+            <td>2.4%</td>
+            <td class="text-muted">0.0%</td>
+          </tr>
+          <tr>
+            <td class="fw-700">Strike</td><td>1</td>
+            <td><span class="score-pill score-55">52</span></td>
+            <td><span class="score-pill score-55">45</span></td>
+            <td><span class="score-pill score-70">72</span></td>
+            <td><span class="score-pill score-55">58</span></td>
+            <td><span class="score-pill score-55">50</span></td>
+            <td class="text-muted">48%</td>
+            <td>2.2%</td>
+            <td class="text-red">-1.9%</td>
+          </tr>
+          <tr>
+            <td class="fw-700">VOLT</td><td>1</td>
+            <td><span class="score-pill score-55">55</span></td>
+            <td><span class="score-pill score-55">48</span></td>
+            <td><span class="score-pill score-70">75</span></td>
+            <td><span class="score-pill score-70">70</span></td>
+            <td><span class="score-pill score-55">55</span></td>
+            <td class="text-muted">52%</td>
+            <td>1.7%</td>
+            <td class="text-green fw-700">+0.7%</td>
+          </tr>
+          <tr>
+            <td class="fw-700">GoSports</td><td>1</td>
+            <td><span class="score-pill score-55">44</span></td>
+            <td><span class="score-pill score-55">40</span></td>
+            <td><span class="score-pill score-70">65</span></td>
+            <td><span class="score-pill score-70">68</span></td>
+            <td><span class="score-pill score-55">42</span></td>
+            <td class="text-muted">40%</td>
+            <td>1.4%</td>
+            <td class="text-red">-0.7%</td>
+          </tr>
+          <tr>
+            <td class="fw-700">Srikel</td><td>1</td>
+            <td><span class="score-pill score-55">42</span></td>
+            <td><span class="score-pill score-55">35</span></td>
+            <td><span class="score-pill score-55">60</span></td>
+            <td><span class="score-pill score-70">65</span></td>
+            <td><span class="score-pill score-55">48</span></td>
+            <td class="text-muted">38%</td>
+            <td>1.4%</td>
+            <td class="text-red">-0.1%</td>
+          </tr>
+          <tr>
+            <td class="fw-700">Amazon Basics</td><td>1 (Amazon)</td>
+            <td><span class="score-pill score-55">50</span></td>
+            <td><span class="score-pill score-55">55</span></td>
+            <td><span class="score-pill score-70">62</span></td>
+            <td><span class="score-pill score-85">90</span></td>
+            <td><span class="score-pill score-85">85</span></td>
+            <td class="text-muted">55%</td>
+            <td>1.1%</td>
+            <td class="text-red">-0.2%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td class="fw-700" style="color:var(--brand);">Kestrel (projected)</td><td>1</td>
+            <td><span class="score-pill score-70" style="background:#fff7ed;color:#c2410c;">72</span></td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td><span class="score-pill score-85">89</span></td>
+            <td><span class="score-pill score-85">92</span></td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td class="text-muted">Projected</td>
+            <td class="text-muted">0%</td>
+            <td class="text-muted">NEW</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <strong>Kestrel projected advantages:</strong> Highest projected Conversion score (89) due to rotomolded construction addressing #1 complaint, and highest Price score (92) due to mid-tier positioning with USAP certification. Findability and Availability will score after launch when PPC, organic ranking, and FBA inventory are live.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 3: KEYWORD GAPS -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-keywords">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Keyword Gap Identification</div>
+      <span class="section-badge">SQP + CEREBRO</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Gap Analysis: High-Volume Keywords Where Competitors Underperform</div>
+      <div class="card-subtitle">Keywords where search volume is growing but no brand (including Apex) has &gt;50% impression share &mdash; indicating available real estate.</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Monthly Volume</th>
+            <th>YoY Growth</th>
+            <th>Apex Imp Share</th>
+            <th>Gap Available</th>
+            <th>Category CVR</th>
+            <th>Opportunity</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw-700">outdoor pickleball balls</td><td>8,489</td>
+            <td class="text-green fw-700">+1,216%</td>
+            <td>32%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:68%;background:var(--green);"></div></div></td>
+            <td>4.8%</td>
+            <td><span class="tag tag-green">HIGH</span></td>
+            <td class="text-xs">Exact Match + Title</td>
+          </tr>
+          <tr>
+            <td class="fw-700">pickleball practice equipment</td><td>5,055</td>
+            <td class="text-green fw-700">+16,206%</td>
+            <td>18%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:82%;background:var(--green);"></div></div></td>
+            <td>2.1%</td>
+            <td><span class="tag tag-green">HIGH</span></td>
+            <td class="text-xs">Broad Match + Blog</td>
+          </tr>
+          <tr>
+            <td class="fw-700">pickleball balls outdoor</td><td>6,800</td>
+            <td class="text-green fw-700">+890%</td>
+            <td>35%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:65%;background:var(--green);"></div></div></td>
+            <td>5.2%</td>
+            <td><span class="tag tag-green">HIGH</span></td>
+            <td class="text-xs">Exact Match + Bullets</td>
+          </tr>
+          <tr>
+            <td class="fw-700">pickleball set</td><td>46,170</td>
+            <td class="text-green fw-700">+36.2%</td>
+            <td>22%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:78%;background:var(--green);"></div></div></td>
+            <td>3.5%</td>
+            <td><span class="tag tag-green">HIGH</span></td>
+            <td class="text-xs">Broad + Virtual Bundle</td>
+          </tr>
+          <tr>
+            <td class="fw-700">wiffle balls</td><td>52,419</td>
+            <td class="text-green">+10.6%</td>
+            <td>15%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:85%;background:var(--green);"></div></div></td>
+            <td>2.8%</td>
+            <td><span class="tag tag-orange">MEDIUM</span></td>
+            <td class="text-xs">Broad Match (cross-cat)</td>
+          </tr>
+          <tr>
+            <td class="fw-700">pickleball balls</td><td>70,744</td>
+            <td class="text-red">-5.6%</td>
+            <td>62%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:38%;background:var(--orange);"></div></div></td>
+            <td>6.1%</td>
+            <td><span class="tag tag-orange">MEDIUM</span></td>
+            <td class="text-xs">Exact Match — must rank</td>
+          </tr>
+          <tr>
+            <td class="fw-700">apex a-40 pickleball balls</td><td>26,352</td>
+            <td class="text-red fw-700">-19.0%</td>
+            <td>88%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:12%;background:var(--red);"></div></div></td>
+            <td>8.2%</td>
+            <td><span class="tag tag-purple">CONQUEST</span></td>
+            <td class="text-xs">PAT on Apex ASINs</td>
+          </tr>
+          <tr>
+            <td class="fw-700">pickleball weight</td><td>954</td>
+            <td class="text-green fw-700">+5,200%</td>
+            <td>8%</td>
+            <td><div class="bar" style="width:100px;"><div class="bar-fill" style="width:92%;background:var(--green);"></div></div></td>
+            <td>1.5%</td>
+            <td><span class="tag tag-green">HIGH</span></td>
+            <td class="text-xs">A+ Content + FAQ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">SQP "Hidden Gold" Keywords (Post-Launch Tracker)</div>
+      <div class="card-subtitle">Keywords where Cart-Add Share &gt; Click Share &gt; Impression Share &mdash; you convert when found, but aren't being found enough. Populate post-launch from SQP data.</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Impression Share</th>
+            <th>Click Share</th>
+            <th>Cart-Add Share</th>
+            <th>Purchase Share</th>
+            <th>Signal</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="7" class="text-muted" style="text-align:center;padding:2rem;font-style:italic;">Populate after Week 2 post-launch from SQP Brand Analytics export. Use Hidden Gold method: filter for cart-add share &gt; click share &gt; impression share.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 4: SQP & IMPRESSION SHARE -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-sqp">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Search Term Impression Share & SQP Funnel</div>
+      <span class="section-badge">WEEKLY TRACKING</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Impression Share Tracker (Top 10 Keywords)</div>
+      <div class="card-subtitle">Track Kestrel's share of impressions, clicks, cart-adds, and purchases for each target keyword. Updated weekly from SQP export.</div>
+      <div class="chart-container">
+        <canvas id="impressionShareChart"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-1">
+      <div class="card">
+        <div class="card-title">SQP Funnel Diagnostic</div>
+        <table>
+          <thead><tr><th>Pattern</th><th>Diagnosis</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="status-dot status-green"></span>Imp &uarr; Click flat</td>
+              <td>Found but not clicked</td>
+              <td class="text-xs">Test main image + title</td>
+            </tr>
+            <tr>
+              <td><span class="status-dot status-orange"></span>Click &uarr; Cart flat</td>
+              <td>Clicked but not converting</td>
+              <td class="text-xs">Audit price, bullets, A+, reviews</td>
+            </tr>
+            <tr>
+              <td><span class="status-dot status-green"></span>Cart &gt; Click &gt; Imp</td>
+              <td class="fw-700 text-green">Hidden Gold!</td>
+              <td class="text-xs">Exact PPC + listing SEO immediately</td>
+            </tr>
+            <tr>
+              <td><span class="status-dot status-red"></span>Share dropping</td>
+              <td>Competitor gaining</td>
+              <td class="text-xs">Investigate: new listing? lower price?</td>
+            </tr>
+            <tr>
+              <td><span class="status-dot status-green"></span>High conv, low vol</td>
+              <td>Long-tail gem</td>
+              <td class="text-xs">Add to listing SEO + low-bid exact</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">Week-over-Week Brand Share Trend</div>
+        <div class="card-subtitle">Track brand share progression on "pickleball balls" (the head term)</div>
+        <div class="chart-container-sm">
+          <canvas id="brandShareTrend"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 5: POE CONVERGENCE -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-poe">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">POE Data Convergence & Unmet Demand</div>
+      <span class="section-badge">OPPORTUNITY ENGINE</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">POE + SQP + Impression Share Convergence Matrix</div>
+      <div class="card-subtitle">When POE shows category growth, SQP shows conversion opportunity, AND impression share is low &mdash; that's where to push spend.</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Cluster / Keyword</th>
+            <th>POE Signal</th>
+            <th>SQP Signal</th>
+            <th>Impression Share</th>
+            <th>Category CVR</th>
+            <th>Our Proj. CVR</th>
+            <th>Convergence</th>
+            <th>Recommended Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="heat-high">
+            <td class="fw-700">Outdoor pickleball balls (mid-tier)</td>
+            <td><span class="tag tag-green">UNMET DEMAND</span></td>
+            <td><span class="tag tag-green">HIGH CART-ADD</span></td>
+            <td>Low (&lt;5%)</td>
+            <td>4.8%</td>
+            <td class="fw-700 text-green">8-12%</td>
+            <td><span class="score-pill score-85">STRONG</span></td>
+            <td class="text-xs">Max budget. Exact + Broad + External Traffic.</td>
+          </tr>
+          <tr class="heat-high">
+            <td class="fw-700">Durable/crack-resistant balls</td>
+            <td><span class="tag tag-green">PURCHASE DRIVER</span></td>
+            <td><span class="tag tag-green">GROWING</span></td>
+            <td>Low (&lt;3%)</td>
+            <td>3.2%</td>
+            <td class="fw-700 text-green">10-15%</td>
+            <td><span class="score-pill score-85">STRONG</span></td>
+            <td class="text-xs">Title + bullets + A+ content. COSMO FAQ.</td>
+          </tr>
+          <tr class="heat-med">
+            <td class="fw-700">Bulk/value packs (12-24 ct)</td>
+            <td><span class="tag tag-orange">GROWING</span></td>
+            <td><span class="tag tag-green">HIGH CVR</span></td>
+            <td>Low (&lt;8%)</td>
+            <td>5.5%</td>
+            <td class="fw-700 text-green">7-10%</td>
+            <td><span class="score-pill score-70">GOOD</span></td>
+            <td class="text-xs">Decoy pricing drives 12-pack as "smart choice."</td>
+          </tr>
+          <tr class="heat-med">
+            <td class="fw-700">Cold-weather / all-season balls</td>
+            <td><span class="tag tag-orange">EMERGING</span></td>
+            <td><span class="tag tag-orange">LOW DATA</span></td>
+            <td>Very low (&lt;1%)</td>
+            <td>1.8%</td>
+            <td>5-8%</td>
+            <td><span class="score-pill score-70">GOOD</span></td>
+            <td class="text-xs">Rotomolded advantage. Target in A+ and Rufus FAQ.</td>
+          </tr>
+          <tr class="heat-low">
+            <td>Practice/training equipment</td>
+            <td><span class="tag tag-green">+16,206% YoY</span></td>
+            <td><span class="tag tag-orange">LOW CVR</span></td>
+            <td>N/A</td>
+            <td>2.1%</td>
+            <td>3-5%</td>
+            <td><span class="score-pill score-55">MODERATE</span></td>
+            <td class="text-xs">Broad match only. Monitor for conversion signal.</td>
+          </tr>
+          <tr class="heat-low">
+            <td>Indoor pickleball balls</td>
+            <td><span class="tag tag-blue">STABLE</span></td>
+            <td><span class="tag tag-blue">STABLE</span></td>
+            <td>N/A</td>
+            <td>4.2%</td>
+            <td>—</td>
+            <td><span class="score-pill score-55">LOW</span></td>
+            <td class="text-xs">Not in initial SKU plan. Year 2 opportunity.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Discover Unmet Demand — Target Clusters</div>
+      <div class="grid-3">
+        <div class="opp-cell opp-high">
+          <div class="fw-700 text-sm">Mid-Tier Outdoor Balls</div>
+          <div class="text-xs text-muted mb-1">$1.25-$1.75/ball — VACANT PRICE TIER</div>
+          <table style="font-size:0.72rem;">
+            <tr><td>Impressions</td><td class="fw-700">High</td></tr>
+            <tr><td>Clicks</td><td class="fw-700">High</td></tr>
+            <tr><td>Purchase rate</td><td class="text-red fw-700">Below benchmark</td></tr>
+            <tr><td>Diagnosis</td><td class="text-green fw-700">Real product gap</td></tr>
+          </table>
+        </div>
+        <div class="opp-cell opp-high">
+          <div class="fw-700 text-sm">Crack-Resistant Construction</div>
+          <div class="text-xs text-muted mb-1">33% of negative reviews cite cracking</div>
+          <table style="font-size:0.72rem;">
+            <tr><td>Negative review theme</td><td class="fw-700">#1 complaint</td></tr>
+            <tr><td>Current solutions</td><td class="text-red fw-700">None adequate</td></tr>
+            <tr><td>Kestrel answer</td><td class="text-green fw-700">Rotomolded</td></tr>
+            <tr><td>Diagnosis</td><td class="text-green fw-700">Build & communicate</td></tr>
+          </table>
+        </div>
+        <div class="opp-cell opp-med">
+          <div class="fw-700 text-sm">Institutional Bulk (100-pack)</div>
+          <div class="text-xs text-muted mb-1">Clubs, coaches, teaching pros</div>
+          <table style="font-size:0.72rem;">
+            <tr><td>Current leader</td><td>Apex 100-pack ($180)</td></tr>
+            <tr><td>Monthly revenue</td><td>$153K (850 units)</td></tr>
+            <tr><td>Kestrel target</td><td class="fw-700">$199-$240</td></tr>
+            <tr><td>Diagnosis</td><td class="text-green fw-700">Undercut + USAP cert</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 6: AD SPEND OPPORTUNITIES -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-adspend">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Ad Spend Opportunity Identifier</div>
+      <span class="section-badge">CTR/CVR RELATIVE TO CATEGORY</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Where to Push Spend: High CTR/CVR + Low Impression Share</div>
+      <div class="card-subtitle">Keywords where our projected CTR and CVR exceed category medians, but we have room to grow impression share. These are the highest-ROI ad spend opportunities.</div>
+      <div class="chart-container">
+        <canvas id="adSpendBubble"></canvas>
+      </div>
+    </div>
+
+    <div class="card mt-1">
+      <div class="card-title">Spend Opportunity Matrix (Post-Launch — Populate from SQP + PPC Data)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Our CTR</th>
+            <th>Cat Median CTR</th>
+            <th>CTR Index</th>
+            <th>Our CVR</th>
+            <th>Cat Median CVR</th>
+            <th>CVR Index</th>
+            <th>Imp Share</th>
+            <th>Headroom</th>
+            <th>Recommendation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="heat-high">
+            <td class="fw-700">outdoor pickleball balls</td>
+            <td>—</td><td>3.2%</td>
+            <td><span class="tag tag-green">PROJ HIGH</span></td>
+            <td>—</td><td>4.8%</td>
+            <td><span class="tag tag-green">PROJ HIGH</span></td>
+            <td>0%</td>
+            <td><div class="bar" style="width:80px;"><div class="bar-fill" style="width:100%;background:var(--green);"></div></div></td>
+            <td><span class="tag tag-green">INCREASE</span></td>
+          </tr>
+          <tr class="heat-high">
+            <td class="fw-700">pickleball balls outdoor</td>
+            <td>—</td><td>3.5%</td>
+            <td><span class="tag tag-green">PROJ HIGH</span></td>
+            <td>—</td><td>5.2%</td>
+            <td><span class="tag tag-green">PROJ HIGH</span></td>
+            <td>0%</td>
+            <td><div class="bar" style="width:80px;"><div class="bar-fill" style="width:100%;background:var(--green);"></div></div></td>
+            <td><span class="tag tag-green">INCREASE</span></td>
+          </tr>
+          <tr class="heat-med">
+            <td class="fw-700">pickleball balls</td>
+            <td>—</td><td>2.8%</td>
+            <td><span class="tag tag-orange">MONITOR</span></td>
+            <td>—</td><td>6.1%</td>
+            <td><span class="tag tag-orange">MONITOR</span></td>
+            <td>0%</td>
+            <td><div class="bar" style="width:80px;"><div class="bar-fill" style="width:100%;background:var(--orange);"></div></div></td>
+            <td><span class="tag tag-orange">TEST FIRST</span></td>
+          </tr>
+          <tr>
+            <td colspan="10" class="text-muted" style="text-align:center;padding:1.5rem;font-style:italic;">
+              Remaining rows populate automatically after Week 2 post-launch. Export SQP weekly, merge with PPC Search Term Report, and calculate CTR/CVR index vs category medians from POE cluster data.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <strong>Decision framework:</strong> If CTR Index &gt; 1.2x AND CVR Index &gt; 1.2x AND Impression Share &lt; 30% &rarr; <strong>INCREASE spend aggressively</strong> (this keyword is underinvested). If CTR Index &lt; 0.8x &rarr; fix creative first, don't increase spend. If CVR Index &lt; 0.8x &rarr; fix listing content/price first.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 7: PRODUCT CATALOG -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-catalog">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Product Catalog</div>
+      <span class="text-xs text-muted">5 SKUs &bull; 624 search terms</span>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>SKU</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Reviews</th>
+            <th>Rank</th>
+            <th>Find</th>
+            <th>Conv</th>
+            <th>Price Score</th>
+            <th>Avail</th>
+            <th>Mkt Pos</th>
+            <th>Avg Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td class="fw-700">Kestrel Outdoor 12-Pack <span class="tag tag-green" style="margin-left:4px;">HERO</span></td>
+            <td>PS-OUT-12</td>
+            <td>$18.99-$29.99</td>
+            <td>—</td><td>—</td><td>—</td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td><span class="score-pill score-85">89</span></td>
+            <td><span class="score-pill score-85">92</span></td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td class="text-xs">Mid-tier target</td>
+            <td><span class="score-pill score-70">72</span></td>
+          </tr>
+          <tr>
+            <td class="fw-700">Kestrel Outdoor 4-Pack <span class="tag tag-blue" style="margin-left:4px;">TRIAL</span></td>
+            <td>PS-OUT-4</td>
+            <td>$7.99-$12.99</td>
+            <td>—</td><td>—</td><td>—</td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td><span class="score-pill score-70">78</span></td>
+            <td><span class="score-pill score-85">90</span></td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td class="text-xs">Low-risk trial</td>
+            <td><span class="score-pill score-70">68</span></td>
+          </tr>
+          <tr>
+            <td class="fw-700">Kestrel Outdoor 24/36-Pack <span class="tag tag-purple" style="margin-left:4px;">DECOY</span></td>
+            <td>PS-OUT-24</td>
+            <td>$34.99-$84.99</td>
+            <td>—</td><td>—</td><td>—</td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td><span class="score-pill score-70">75</span></td>
+            <td><span class="score-pill score-70">78</span></td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td class="text-xs">Anchor/decoy</td>
+            <td><span class="score-pill score-55">65</span></td>
+          </tr>
+          <tr>
+            <td class="fw-700">Kestrel Outdoor 100-Pack <span class="tag tag-purple" style="margin-left:4px;">INSTITUTIONAL</span></td>
+            <td>PS-OUT-100</td>
+            <td>$199.99-$239.99</td>
+            <td>—</td><td>—</td><td>—</td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td><span class="score-pill score-70">72</span></td>
+            <td><span class="score-pill score-70">75</span></td>
+            <td><span class="score-pill score-55" style="background:#fff7ed;color:#c2410c;">—</span></td>
+            <td class="text-xs">Clubs/coaches</td>
+            <td><span class="score-pill score-55">62</span></td>
+          </tr>
+          <tr>
+            <td class="fw-700" style="color:var(--text-muted);">Kestrel Outdoor 6-Pack <span class="tag tag-orange" style="margin-left:4px;">MONTH 4</span></td>
+            <td>PS-OUT-6</td>
+            <td>$17.99</td>
+            <td>—</td><td>—</td><td>—</td>
+            <td><span class="score-pill score-55" style="background:#f1f5f9;color:#94a3b8;">—</span></td>
+            <td><span class="score-pill score-55" style="background:#f1f5f9;color:#94a3b8;">—</span></td>
+            <td><span class="score-pill score-85">88</span></td>
+            <td><span class="score-pill score-55" style="background:#f1f5f9;color:#94a3b8;">—</span></td>
+            <td class="text-xs">Summit undercut</td>
+            <td><span class="score-pill score-55" style="background:#f1f5f9;color:#94a3b8;">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Competitor Top Products (SmartScout April 2026)</div>
+      <table>
+        <thead>
+          <tr><th>Product</th><th>ASIN</th><th>Rating</th><th>Reviews</th><th>Revenue/Mo</th><th>Units/Mo</th><th>Price</th><th>Per Ball</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="fw-700">Apex A-40 Outdoor 12-Pack</td><td>B074P8MZW9</td><td>4.7</td><td>25,021</td><td class="fw-700">$266,678</td><td>9,043</td><td>$29.49</td><td>$2.46</td></tr>
+          <tr><td>Apex A-40 100-Pack</td><td>B074PD873C</td><td>4.7</td><td>25,021</td><td>$153,204</td><td>850</td><td>$180.24</td><td>$1.80</td></tr>
+          <tr><td>Apex A-40 36-Pack Bucket</td><td>B0BL8L9VNN</td><td>4.7</td><td>25,021</td><td>$91,361</td><td>1,047</td><td>$87.26</td><td>$2.42</td></tr>
+          <tr><td>Apex A-40 3-Pack (Yellow)</td><td>B06XTW1BND</td><td>4.7</td><td>25,021</td><td>$90,238</td><td>9,051</td><td>$9.97</td><td>$3.32</td></tr>
+          <tr><td>Apex Neon A-40 6-Pack</td><td>B0DVTK2H83</td><td>4.7</td><td>25,021</td><td>$33,428</td><td>2,042</td><td>$16.37</td><td>$2.73</td></tr>
+          <tr><td>cyclotron 6-Pack Outdoor</td><td>—</td><td>4.5</td><td>654</td><td>$21,138</td><td>1,763</td><td>$11.99</td><td>$2.00</td></tr>
+          <tr><td>Navona 12-Pack Colorful</td><td>—</td><td>4.4</td><td>131</td><td>$8,146</td><td>581</td><td>$14.02</td><td>$1.17</td></tr>
+          <tr><td>VOLT HC-40 3-Pack</td><td>—</td><td>4.5</td><td>75</td><td>$7,982</td><td>799</td><td>$9.99</td><td>$3.33</td></tr>
+          <tr><td>GoSports GS 40 12-Pack</td><td>—</td><td>4.4</td><td>859</td><td>$7,234</td><td>375</td><td>$19.29</td><td>$1.61</td></tr>
+          <tr><td>Amazon Basics 12-Pack</td><td>—</td><td>4.5</td><td>102</td><td>$6,996</td><td>336</td><td>$20.82</td><td>$1.74</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Kestrel Pickleball Balls &mdash; Competitive Intelligence & Launch Tracking Dashboard &mdash; April 2026</p>
+  <p>Data sources: SmartScout (175 ASINs, 33 brands, 624 search terms), Cerebro (4,165 keywords), SQP (post-launch), POE Discover Unmet Demand</p>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// Tab switching
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Score ring (placeholder)
+const ringCtx = document.getElementById('scoreRing').getContext('2d');
+new Chart(ringCtx, {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [0, 100],
+      backgroundColor: ['#f97316', '#e2e8f0'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    cutout: '78%', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+  }
+});
+
+// Impression share chart (projected target vs current)
+const impCtx = document.getElementById('impressionShareChart').getContext('2d');
+new Chart(impCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'pickleball balls', 'outdoor pickleball balls', 'pickleball balls outdoor',
+      'pickleball set', 'wiffle balls', 'pickleball practice equip',
+      'pickleball weight', 'apex a-40', 'pickleball accessories', 'yellow ball'
+    ],
+    datasets: [
+      {
+        label: 'Apex Impression Share',
+        data: [62, 32, 35, 22, 15, 18, 8, 88, 25, 12],
+        backgroundColor: 'rgba(239,68,68,0.3)', borderColor: '#ef4444', borderWidth: 1
+      },
+      {
+        label: 'Kestrel Target (M3)',
+        data: [8, 15, 15, 10, 5, 12, 10, 0, 8, 8],
+        backgroundColor: 'rgba(249,115,22,0.4)', borderColor: '#f97316', borderWidth: 1
+      },
+      {
+        label: 'Available Gap',
+        data: [30, 53, 50, 68, 80, 70, 82, 12, 67, 80],
+        backgroundColor: 'rgba(34,197,94,0.15)', borderColor: '#22c55e', borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    scales: {
+      x: { stacked: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#f1f5f9' } },
+      y: { stacked: true, grid: { display: false } }
+    },
+    plugins: { legend: { labels: { font: { size: 11 } } } }
+  }
+});
+
+// Brand share trend
+const trendCtx = document.getElementById('brandShareTrend').getContext('2d');
+new Chart(trendCtx, {
+  type: 'line',
+  data: {
+    labels: ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'],
+    datasets: [
+      {
+        label: 'Kestrel Impression Share',
+        data: [0,0.5,1.2,2.5,3.8,5.2,6.5,7.8,9,10.5,12,14],
+        borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)',
+        fill: true, tension: 0.3
+      },
+      {
+        label: 'Apex Impression Share',
+        data: [62,61.5,61,60.5,60,59.5,59,58.5,58,57.5,57,56.5],
+        borderColor: '#ef4444', borderDash: [5,5],
+        fill: false, tension: 0.3
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { font: { size: 10 } } } },
+    scales: {
+      y: { ticks: { callback: v => v + '%' }, grid: { color: '#f1f5f9' }, min: 0, max: 70 },
+      x: { grid: { color: '#f1f5f9' } }
+    }
+  }
+});
+
+// Ad spend bubble chart
+const bubbleCtx = document.getElementById('adSpendBubble').getContext('2d');
+new Chart(bubbleCtx, {
+  type: 'bubble',
+  data: {
+    datasets: [
+      {
+        label: 'HIGH OPPORTUNITY (increase spend)',
+        data: [
+          { x: 8489, y: 68, r: 18 },  // outdoor pickleball balls
+          { x: 5055, y: 82, r: 14 },  // practice equipment
+          { x: 6800, y: 65, r: 16 },  // pickleball balls outdoor
+        ],
+        backgroundColor: 'rgba(34,197,94,0.3)', borderColor: '#22c55e', borderWidth: 2
+      },
+      {
+        label: 'MEDIUM OPPORTUNITY (test first)',
+        data: [
+          { x: 46170, y: 78, r: 22 },  // pickleball set
+          { x: 52419, y: 85, r: 20 },  // wiffle balls
+        ],
+        backgroundColor: 'rgba(245,158,11,0.3)', borderColor: '#f59e0b', borderWidth: 2
+      },
+      {
+        label: 'COMPETITIVE (defend/conquest)',
+        data: [
+          { x: 70744, y: 38, r: 25 },  // pickleball balls
+          { x: 26352, y: 12, r: 15 },  // apex a-40
+        ],
+        backgroundColor: 'rgba(239,68,68,0.2)', borderColor: '#ef4444', borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: {
+        title: { display: true, text: 'Monthly Search Volume', font: { size: 11 } },
+        ticks: { callback: v => v >= 1000 ? v/1000 + 'K' : v },
+        grid: { color: '#f1f5f9' }
+      },
+      y: {
+        title: { display: true, text: 'Gap Available %', font: { size: 11 } },
+        ticks: { callback: v => v + '%' },
+        grid: { color: '#f1f5f9' }, min: 0, max: 100
+      }
+    },
+    plugins: {
+      legend: { labels: { font: { size: 10 } } },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const labels = {
+              0: ['outdoor pickleball balls', 'pickleball practice equip', 'pickleball balls outdoor'],
+              1: ['pickleball set', 'wiffle balls'],
+              2: ['pickleball balls', 'apex a-40']
+            };
+            const name = labels[ctx.datasetIndex]?.[ctx.dataIndex] || '';
+            return `${name}: ${ctx.raw.x.toLocaleString()} vol, ${ctx.raw.y}% gap`;
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

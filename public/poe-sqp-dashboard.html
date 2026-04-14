@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kestrel | POE & SQP Market Intelligence Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<style>
+:root{--bg:#f8f9fb;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;--light:#94a3b8;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;--brand:#f97316}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5}
+.nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 1.5rem;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1600px;margin:0 auto;display:flex;align-items:center;height:50px;gap:1rem;overflow-x:auto}
+.nav-brand{font-weight:800;color:var(--brand);white-space:nowrap;font-size:1rem}
+.tab{padding:0.8rem 1rem;font-size:0.82rem;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab:hover{color:var(--text)}.tab.active{color:var(--text);border-bottom-color:var(--brand);font-weight:600}
+.container{max-width:1600px;margin:0 auto;padding:1rem 1.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;overflow-x:auto}
+.card-title{font-weight:700;font-size:0.9rem;margin-bottom:0.5rem}
+.card-sub{font-size:0.75rem;color:var(--muted);margin-bottom:0.75rem}
+table{width:100%;border-collapse:collapse;font-size:0.78rem;white-space:nowrap}
+th{text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:2px solid var(--border);font-size:0.7rem;text-transform:uppercase}
+th:first-child{text-align:left;min-width:160px}
+td{padding:4px 8px;border-bottom:1px solid #f1f5f9;text-align:right}
+td:first-child{text-align:left;font-weight:500}
+tr:hover td{background:rgba(59,130,246,0.02)}
+.hl td{background:rgba(249,115,22,0.05);font-weight:600}
+.neg{color:var(--red)}.pos{color:var(--green)}.bold{font-weight:700}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.kpi{text-align:center;padding:0.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.kpi-val{font-size:1.5rem;font-weight:800;line-height:1.2}
+.kpi-label{font-size:0.7rem;color:var(--muted)}
+.kpi-sub{font-size:0.65rem;color:var(--light)}
+.chart-box{position:relative;height:280px}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:600;text-transform:uppercase}
+.tag-green{background:#dcfce7;color:#15803d}.tag-red{background:#fee2e2;color:#dc2626}.tag-orange{background:#fef3c7;color:#a16207}.tag-blue{background:#dbeafe;color:#1d4ed8}.tag-purple{background:#ede9fe;color:#7c3aed}
+.callout{border-left:3px solid var(--blue);padding:0.6rem 0.8rem;background:rgba(59,130,246,0.04);border-radius:0 8px 8px 0;margin:0.75rem 0;font-size:0.82rem}
+.callout.green{border-color:var(--green);background:rgba(34,197,94,0.04)}
+.callout.orange{border-color:var(--orange);background:rgba(245,158,11,0.04)}
+.callout.red{border-color:var(--red);background:rgba(239,68,68,0.04)}
+.bar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden;min-width:60px}.bar-fill{height:100%;border-radius:3px}
+.tab-content{display:none}.tab-content.active{display:block}
+.footer{text-align:center;padding:1.5rem;color:var(--light);font-size:0.7rem;border-top:1px solid var(--border);margin-top:2rem}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner">
+<span class="nav-brand">POE & SQP Intelligence</span>
+<div class="tab active" data-tab="niches">Niche Analysis</div>
+<div class="tab" data-tab="products">Top Products (1,000 ASINs)</div>
+<div class="tab" data-tab="seasonality">Seasonality</div>
+<div class="tab" data-tab="demand">Market Demand Clusters</div>
+<div class="tab" data-tab="opportunities">Opportunities</div>
+<div class="tab" data-tab="searchterms">Top Search Terms</div>
+</div></nav>
+
+<div class="container">
+
+<!-- ========== NICHE ANALYSIS ========== -->
+<div class="tab-content active" id="tab-niches">
+<div class="grid-4">
+<div class="kpi" style="border-left:3px solid var(--blue)"><div class="kpi-val" style="color:var(--blue)">3.48M</div><div class="kpi-label">Searches (360d)</div><div class="kpi-sub">"pickleball balls" niche</div></div>
+<div class="kpi" style="border-left:3px solid var(--green)"><div class="kpi-val" style="color:var(--green)">250-300K</div><div class="kpi-label">Units Sold (360d)</div><div class="kpi-sub">Entire pickleball balls niche</div></div>
+<div class="kpi" style="border-left:3px solid var(--orange)"><div class="kpi-val" style="color:var(--orange)">$19.99</div><div class="kpi-label">Avg Price</div><div class="kpi-sub">Category average</div></div>
+<div class="kpi" style="border-left:3px solid var(--green)"><div class="kpi-val" style="color:var(--green)">1.18%</div><div class="kpi-label">Return Rate</div><div class="kpi-sub">Very low — product satisfaction</div></div>
+</div>
+
+<div class="card">
+<div class="card-title">POE Niche Analysis — All Pickleball Ball Niches</div>
+<div class="card-sub">Product Opportunity Explorer data as of April 8, 2026. Sorted by search volume.</div>
+<table>
+<thead><tr><th>Customer Need (Niche)</th><th>Top Search Terms</th><th>Search Vol (360d)</th><th>Growth (180d)</th><th>Search Vol (90d)</th><th>Growth (90d)</th><th>Units Sold (360d)</th><th>Avg Price</th><th>Return Rate</th><th># Products</th><th>Signal</th></tr></thead>
+<tbody>
+<tr class="hl"><td>pickleball balls</td><td>pickleball balls, gifts, accessories</td><td class="bold">3,482,946</td><td class="pos">+7.89%</td><td>626,475</td><td class="neg">-46.96%</td><td>250-300K</td><td>$19.99</td><td>1.18%</td><td>23</td><td><span class="tag tag-green">CORE</span></td></tr>
+<tr><td>outdoor pickleball balls</td><td>outdoor, pickle balls</td><td>515,922</td><td class="neg">-17.37%</td><td>107,608</td><td class="neg">-14.49%</td><td>50-60K</td><td>$13.62</td><td>0.91%</td><td>21</td><td><span class="tag tag-blue">TARGET</span></td></tr>
+<tr><td>pickleball machine</td><td>machine, ball thrower</td><td>313,044</td><td class="pos">+10.53%</td><td>76,387</td><td class="neg">-13.17%</td><td>2.5-3K</td><td>$544.32</td><td>1.16%</td><td>35</td><td><span class="tag tag-purple">CROSS-SELL</span></td></tr>
+<tr><td>indoor pickleball balls</td><td>indoor pickleballs</td><td class="bold">296,739</td><td class="pos bold">+57.35%</td><td>78,795</td><td class="neg">-23.24%</td><td>25-30K</td><td>$14.85</td><td>1.06%</td><td>27</td><td><span class="tag tag-green">FUTURE SKU</span></td></tr>
+<tr><td>apex a-40 pickleball balls</td><td>lifetime pickleballs</td><td>221,345</td><td class="pos bold">+137.75%</td><td>82,250</td><td class="pos">+11.81%</td><td>6-8K</td><td>$24.73</td><td>0.93%</td><td>19</td><td><span class="tag tag-orange">CONQUEST</span></td></tr>
+<tr><td>pickleball hopper</td><td>hopper, caddy, basket</td><td>124,040</td><td class="neg">-6.29%</td><td>26,946</td><td class="neg">-18.5%</td><td>4-5K</td><td>$60.42</td><td>1.83%</td><td>57</td><td><span class="tag tag-purple">BUNDLE</span></td></tr>
+<tr><td>pickleball ball holder</td><td>holder, picker upper</td><td>86,774</td><td class="pos">+5.36%</td><td>19,936</td><td class="neg">-18.91%</td><td>2.5-3K</td><td>$16.02</td><td>1.09%</td><td>22</td><td><span class="tag tag-purple">BUNDLE</span></td></tr>
+<tr><td>pickleball picker upper</td><td>retriever, ball retriever</td><td>81,985</td><td class="neg">-0.55%</td><td>17,311</td><td class="neg">-26.56%</td><td>5-6K</td><td>$29.40</td><td>1.66%</td><td>37</td><td><span class="tag tag-purple">BUNDLE</span></td></tr>
+<tr><td>glow in the dark pickleball</td><td>glow, light up</td><td>77,656</td><td class="neg">-30.39%</td><td>11,303</td><td class="neg">-45.05%</td><td>5-6K</td><td>$21.33</td><td>1.46%</td><td>13</td><td><span class="tag tag-orange">DECLINING</span></td></tr>
+<tr><td>quiet pickleball balls</td><td>foam, silent pickleballs</td><td class="bold">60,271</td><td class="pos">+16.35%</td><td>16,087</td><td class="neg">-1.47%</td><td>5-6K</td><td>$15.35</td><td>1.01%</td><td>19</td><td><span class="tag tag-green">FUTURE SKU</span></td></tr>
+<tr><td>pickleball tube ball pickup</td><td>tube, pickup tube</td><td>60,345</td><td class="pos">+7.53%</td><td>14,437</td><td class="neg">-14.23%</td><td>5-6K</td><td>$35.55</td><td>1.32%</td><td>19</td><td><span class="tag tag-purple">BUNDLE</span></td></tr>
+<tr><td>bulk pickleballs</td><td>bulk, indoor outdoor</td><td class="bold">47,285</td><td class="pos bold">+100.41%</td><td>18,368</td><td class="pos bold">+39.39%</td><td>3-4K</td><td>$14.47</td><td>1.07%</td><td>18</td><td><span class="tag tag-green">24/100-PACK</span></td></tr>
+<tr><td>nexus indoor pickleball balls</td><td>nexus, fuse indoor</td><td>44,487</td><td class="pos">+33.27%</td><td>9,077</td><td class="neg">-44.45%</td><td>4-5K</td><td>$16.12</td><td>1.07%</td><td>13</td><td><span class="tag tag-blue">COMPETITOR</span></td></tr>
+<tr><td>a40 pickleball balls</td><td>a40, a-40</td><td>39,668</td><td class="neg bold">-38.46%</td><td>3,596</td><td class="neg bold">-68.78%</td><td>2-2.5K</td><td>$123.25</td><td>1.04%</td><td>9</td><td><span class="tag tag-red">COLLAPSING</span></td></tr>
+<tr><td>pink pickleball balls</td><td>pink pickleballs</td><td>30,833</td><td class="neg">-26.82%</td><td>6,598</td><td class="pos">+2.58%</td><td>2-2.5K</td><td>$14.11</td><td>1.83%</td><td>18</td><td><span class="tag tag-orange">NICHE</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout green"><strong>Key insight — Bulk pickleball balls surging +100.41% (180d) and +39.39% (90d).</strong> This is the fastest-growing niche in pickleball balls. Kestrel's 24/36-pack and 100-pack SKUs are perfectly positioned to capture this demand. The $14.47 avg price validates our mid-tier pricing strategy.</div>
+<div class="callout red"><strong>Apex A-40 branded searches collapsing:</strong> "a40 pickleball balls" down -38.46% (180d) and -68.78% (90d). Shoppers are searching for alternatives. Meanwhile "apex a-40 pickleball balls" niche grew +137.75% as lifetime/alternate brands show up for these searches — suggesting consumers seeking alternatives within the search term.</div>
+</div>
+
+<!-- ========== TOP PRODUCTS ========== -->
+<div class="tab-content" id="tab-products">
+<div class="card">
+<div class="card-title">Top 25 Products by Search Click Count (Past 360 Days)</div>
+<div class="card-sub">From ASIN Explorer — 1,000 products tracked. Click count = total clicks from Amazon search results.</div>
+<table>
+<thead><tr><th>Product</th><th>Brand</th><th>ASIN</th><th>Launch</th><th>Clicks (360d)</th><th>Price (90d)</th><th>Price (360d)</th><th>Reviews</th><th>Rating</th><th>BSR</th><th>Sellers</th></tr></thead>
+<tbody>
+<tr class="hl"><td>A-40 Outdoor 12-Pack</td><td class="bold">Apex</td><td>B074P8MZW9</td><td>2017-08</td><td class="bold">393,060</td><td>$38.14</td><td>$36.91</td><td>25,046</td><td>4.7</td><td>1</td><td>9.71</td></tr>
+<tr><td>A-40 Outdoor 3-Pack Yellow</td><td>Apex</td><td>B06XTW1BND</td><td>2017-03</td><td>229,634</td><td>$16.50</td><td>$15.33</td><td>25,046</td><td>4.7</td><td>1</td><td>19.24</td></tr>
+<tr><td>Pro K1 12-Pack (Crack-Resistant)</td><td class="bold">Summit</td><td>B0CK59WM7V</td><td>2023-11</td><td class="bold">171,479</td><td>$21.73</td><td>$28.35</td><td>2,592</td><td>4.59</td><td>2</td><td>2</td></tr>
+<tr><td>Pro K1 4-Pack (Crack-Resistant)</td><td class="bold">Summit</td><td>B0CK591Z63</td><td>2023-11</td><td class="bold">147,470</td><td>$10.11</td><td>$13.87</td><td>2,592</td><td>4.59</td><td>2</td><td>1.72</td></tr>
+<tr><td>6-Pack Outdoor (Green)</td><td>cyclotron</td><td>B0DM8YV5XQ</td><td>2024-12</td><td>87,866</td><td>$11.89</td><td>$10.22</td><td>654</td><td>4.5</td><td>2</td><td>1</td></tr>
+<tr><td>Neon A-40 Outdoor 6-Pack</td><td>Apex</td><td>B0DVTK2H83</td><td>2025-02</td><td>77,693</td><td>$29.66</td><td>$29.05</td><td>25,046</td><td>4.7</td><td>1</td><td>11</td></tr>
+<tr><td>Recruit Indoor</td><td>Nexus</td><td>B0BS2GFGYF</td><td>2023-01</td><td>61,230</td><td>$11.65</td><td>$11.90</td><td>1,361</td><td>4.7</td><td>7</td><td>3</td></tr>
+<tr><td>VPRO Flight Outdoor 6-Pack</td><td>Vulcan</td><td>B0CTVP7C5G</td><td>2024-04</td><td>37,870</td><td>$24.11</td><td>$24.87</td><td>584</td><td>4.4</td><td>44</td><td>3</td></tr>
+<tr><td>Roto-Molded 4-Pack</td><td class="bold" style="color:var(--red)">Dinkly</td><td>B0DLKGBC8J</td><td>2024-10</td><td class="bold">37,184</td><td>$10.10</td><td>$10.86</td><td>227</td><td>4.4</td><td>5</td><td>1</td></tr>
+<tr><td>A-40 Outdoor 40-Pack</td><td>Apex</td><td>B0D2J7FVL9</td><td>2024-04</td><td>36,906</td><td>$138.92</td><td>$134.37</td><td>25,046</td><td>4.7</td><td>1</td><td>3.82</td></tr>
+<tr><td>20-Pack Multicolor Outdoor</td><td>Magicorange</td><td>B0CQBYTXRK</td><td>2023-12</td><td>35,031</td><td>$20.85</td><td>$21.21</td><td>236</td><td>4.59</td><td>81</td><td>1</td></tr>
+<tr><td>48-Pack Outdoor</td><td>Navona</td><td>B0DCJZKKJX</td><td>2024-08</td><td>33,069</td><td>$28.60</td><td>$27.01</td><td>417</td><td>4.2</td><td>110</td><td>1</td></tr>
+<tr><td>X-26 Indoor 12-Pack</td><td>Apex</td><td>B07Q23Q17V</td><td>2019-03</td><td>30,248</td><td>$40.80</td><td>$32.89</td><td>2,824</td><td>4.2</td><td>3</td><td>6.37</td></tr>
+<tr><td>A-40 36-Pack Bucket</td><td>Apex</td><td>B0BL8L9VNN</td><td>2022-11</td><td>26,288</td><td>$114.19</td><td>$114.15</td><td>25,046</td><td>4.7</td><td>1</td><td>4.92</td></tr>
+<tr><td>GS 40 Outdoor 12-Pack</td><td>GoSports</td><td>B0C386VJ4D</td><td>2023-04</td><td>23,199</td><td>$25.46</td><td>$24.39</td><td>859</td><td>4.4</td><td>27</td><td>3</td></tr>
+<tr><td>Glow-in-Dark 6-Pack</td><td>Amoswiz</td><td>B0CSYRHQDW</td><td>2024-03</td><td>22,068</td><td>$13.58</td><td>$13.81</td><td>91</td><td>4.0</td><td>222</td><td>1</td></tr>
+<tr><td>Glow-in-Dark Outdoor 3-Pack</td><td>Apex</td><td>B0CHK6X81Y</td><td>2023-09</td><td>19,708</td><td>$13.81</td><td>$13.69</td><td>183</td><td>4.2</td><td>251</td><td>4</td></tr>
+<tr><td>6-Pack Colorful Outdoor</td><td>FASIUCHOI</td><td>B0D9LQCZRZ</td><td>2024-07</td><td>19,321</td><td>$7.99</td><td>$7.93</td><td>217</td><td>4.59</td><td>8</td><td>1</td></tr>
+<tr><td>HC-40 Hardcourt 3/12-Pack</td><td>VOLT</td><td>B0FFSY7LFQ</td><td>2025-10</td><td>18,185</td><td>$14.23</td><td>$14.13</td><td>80</td><td>4.59</td><td>10</td><td>2</td></tr>
+<tr><td>12-Pack Colorful Outdoor</td><td>Navona</td><td>B0DKX9FWLP</td><td>2024-10</td><td>17,452</td><td>$14.26</td><td>$13.85</td><td>131</td><td>4.4</td><td>16</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout red"><strong>Dinkly is the direct rotomolded competitor.</strong> Launched Oct 2024, already at BSR #5 with 37K clicks and 227 reviews. Their 4-pack at $10.10 ($2.53/ball) is in the premium-value zone. Kestrel must differentiate on pack-size variety, brand credibility, and USAP certification. Monitor Dinkly's growth trajectory closely.</div>
+
+<div class="card">
+<div class="card-title">Competitive Price/Review Landscape</div>
+<div class="chart-box"><canvas id="priceReviewChart"></canvas></div>
+</div>
+</div>
+
+<!-- ========== SEASONALITY ========== -->
+<div class="tab-content" id="tab-seasonality">
+<div class="card">
+<div class="card-title">Seasonality Analysis — Search Volume Trends</div>
+<div class="card-sub">POE data shows dramatic seasonality. 90-day search volume is -46.96% below 360-day average for core "pickleball balls" niche (spring dip before summer ramp).</div>
+<div class="chart-box"><canvas id="seasonChart"></canvas></div>
+</div>
+
+<div class="grid-2">
+<div class="card">
+<div class="card-title">Seasonality by Niche (90d vs 360d Growth)</div>
+<table>
+<thead><tr><th>Niche</th><th>180d Growth</th><th>90d Growth</th><th>Interpretation</th></tr></thead>
+<tbody>
+<tr><td>pickleball balls</td><td class="pos">+7.89%</td><td class="neg bold">-46.96%</td><td>Spring dip — recovering by summer</td></tr>
+<tr><td>outdoor pickleball balls</td><td class="neg">-17.37%</td><td class="neg">-14.49%</td><td>Seasonal outdoor decline</td></tr>
+<tr><td>indoor pickleball balls</td><td class="pos bold">+57.35%</td><td class="neg">-23.24%</td><td>YoY surging despite seasonal</td></tr>
+<tr><td>bulk pickleballs</td><td class="pos bold">+100.41%</td><td class="pos bold">+39.39%</td><td>Growing through seasonal dip!</td></tr>
+<tr><td>quiet pickleball balls</td><td class="pos">+16.35%</td><td class="neg">-1.47%</td><td>Steady growth, minimal seasonal</td></tr>
+<tr><td>a40 pickleball balls</td><td class="neg bold">-38.46%</td><td class="neg bold">-68.78%</td><td>Brand erosion + seasonal</td></tr>
+<tr><td>glow in the dark pickleball</td><td class="neg">-30.39%</td><td class="neg bold">-45.05%</td><td>Fad declining</td></tr>
+<tr><td>apex a-40 pickleball</td><td class="pos bold">+137.75%</td><td class="pos">+11.81%</td><td>Alt brands showing in searches</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card">
+<div class="card-title">Launch Timing Recommendation</div>
+<div class="callout green"><strong>Optimal launch window: Late April/Early May.</strong> The -46.96% seasonal dip in 90-day search volume means April is the trough. Launching now means:
+<ul style="margin:0.5rem 0 0 1rem;font-size:0.8rem;">
+<li>Lower PPC CPCs during low season</li>
+<li>Build reviews before summer demand surge</li>
+<li>Establish organic ranking before peak competition</li>
+<li>By June-August, search volume recovers +50-75%</li>
+<li>Existing reviews + rank = compounding advantage during peak</li>
+</ul></div>
+<div class="callout orange" style="margin-top:0.5rem;"><strong>Revenue seasonality adjustment:</strong> Months 1-2 (May-June) at baseline, Months 3-5 (July-Sep) at +50% seasonal uplift, Months 8-10 (Dec-Feb) at -20% seasonal dip. P&L forecast already incorporates this pattern.</div>
+</div>
+</div>
+</div>
+
+<!-- ========== MARKET DEMAND ========== -->
+<div class="tab-content" id="tab-demand">
+<div class="card">
+<div class="card-title">Market Demand Clusters (POE Purchase Intent)</div>
+<div class="card-sub">Each cluster represents a distinct purchase intent with its own search behavior, click rate, and conversion rate.</div>
+<table>
+<thead><tr><th>Purchase Intent</th><th>Search Vol</th><th>Growth</th><th>Impressions</th><th>Clicks</th><th>Click Growth</th><th>Click Rate</th><th>Purchase Rate</th><th>Search CVR</th><th>Kestrel Relevance</th></tr></thead>
+<tbody>
+<tr><td class="bold">tennis ball hopper</td><td>42,313</td><td class="pos bold">+22.83%</td><td>1,946,822</td><td>23,210</td><td class="pos">+51.34%</td><td>54.85%</td><td>7.46%</td><td class="pos bold">4.09%</td><td><span class="tag tag-purple">BUNDLE OPP</span></td></tr>
+<tr><td class="bold">pickleball shirt</td><td>22,119</td><td class="pos">+16.03%</td><td>936,947</td><td>9,441</td><td class="pos">+22.4%</td><td>42.68%</td><td>4.26%</td><td>1.82%</td><td><span class="tag tag-blue">LIFESTYLE</span></td></tr>
+<tr><td class="bold">pickleball training equip</td><td>14,461</td><td class="neg">-2.24%</td><td>618,023</td><td>7,404</td><td class="pos">+18.93%</td><td>51.19%</td><td>2.71%</td><td class="neg">1.38%</td><td><span class="tag tag-orange">LOW CVR GAP</span></td></tr>
+<tr><td>pickleball machine</td><td>13,390</td><td class="neg">-0.78%</td><td>397,103</td><td>5,938</td><td class="pos">+12.76%</td><td>44.34%</td><td>1.71%</td><td class="neg bold">0.76%</td><td><span class="tag tag-red">UNMET DEMAND</span></td></tr>
+<tr><td>pickleball ball holder</td><td>9,830</td><td class="neg">-2.96%</td><td>373,528</td><td>4,887</td><td class="pos">+4.26%</td><td>49.71%</td><td>9.63%</td><td class="pos bold">4.79%</td><td><span class="tag tag-green">BUNDLE TARGET</span></td></tr>
+<tr><td>pickleball rackets</td><td>8,825</td><td class="pos">+1.3%</td><td>195,799</td><td>4,376</td><td class="pos bold">+43.47%</td><td>49.58%</td><td>4.93%</td><td>2.44%</td><td><span class="tag tag-purple">CROSS-SELL</span></td></tr>
+<tr><td>basketball court tiles</td><td>8,147</td><td class="pos">+12.31%</td><td>150,666</td><td>3,749</td><td class="pos">+25.34%</td><td>46.01%</td><td>0.32%</td><td class="neg bold">0.14%</td><td><span class="tag tag-red">IRRELEVANT</span></td></tr>
+<tr><td>pickleball bag women</td><td>6,185</td><td class="neg">-4.5%</td><td>194,776</td><td>4,546</td><td class="pos">+26.91%</td><td>73.5%</td><td>1.93%</td><td>1.42%</td><td><span class="tag tag-blue">LIFESTYLE</span></td></tr>
+<tr><td>hts safety glasses</td><td>4,615</td><td class="neg">-10.51%</td><td>82,531</td><td>2,829</td><td class="pos">+8.43%</td><td>61.3%</td><td>4.91%</td><td>3.01%</td><td><span class="tag tag-purple">CROSS-SELL</span></td></tr>
+<tr><td>pickleball court</td><td>4,110</td><td class="pos">+1.98%</td><td>194,791</td><td>1,939</td><td class="pos">+37.32%</td><td>47.17%</td><td>2.21%</td><td>1.04%</td><td><span class="tag tag-blue">LIFESTYLE</span></td></tr>
+<tr><td>football coasters</td><td>3,540</td><td class="neg">-10.66%</td><td>141,266</td><td>1,540</td><td class="pos">+20.78%</td><td>43.5%</td><td>11.16%</td><td class="pos bold">4.85%</td><td><span class="tag tag-red">IRRELEVANT</span></td></tr>
+<tr><td>lens free pickleball glasses</td><td>3,266</td><td class="neg">-4.03%</td><td>74,255</td><td>1,659</td><td class="pos">+0.18%</td><td>50.79%</td><td>6.93%</td><td>3.52%</td><td><span class="tag tag-purple">CROSS-SELL</span></td></tr>
+<tr><td>tennis ball tube</td><td>3,171</td><td class="pos">+2.98%</td><td>131,151</td><td>1,356</td><td>0%</td><td>42.76%</td><td>12.09%</td><td class="pos bold">5.17%</td><td><span class="tag tag-green">BUNDLE TARGET</span></td></tr>
+<tr><td>pickleball game</td><td>1,712</td><td class="neg">-29.41%</td><td>52,785</td><td>732</td><td class="neg">-29.35%</td><td>42.75%</td><td>10.38%</td><td class="pos">4.43%</td><td><span class="tag tag-red">DECLINING</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout green"><strong>Virtual bundle opportunities confirmed by POE data:</strong> "pickleball ball holder" (4.79% CVR) and "tennis ball tube" (5.17% CVR) have high purchase rates and are natural bundle candidates with pickleball balls. A "12-pack balls + mesh carry bag" or "12-pack + ball tube" virtual bundle would capture Frequently Bought Together slots and displace competitor ads.</div>
+</div>
+
+<!-- ========== OPPORTUNITIES ========== -->
+<div class="tab-content" id="tab-opportunities">
+<div class="card">
+<div class="card-title">Strategic Opportunities from POE Data</div>
+<div class="grid-3">
+<div style="padding:1rem;border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;">
+<div class="bold" style="font-size:0.85rem;">1. Bulk Pickleball Balls</div>
+<div style="font-size:0.75rem;color:var(--muted);margin:0.3rem 0;">+100.41% growth (180d), +39.39% (90d)</div>
+<div style="font-size:0.78rem;">Growing through seasonal dip. Validates 24/36-pack and 100-pack SKUs. Average price $14.47 — our 24-pack at $44.99 targets the institutional buyer segment above this average.</div>
+<div style="margin-top:0.5rem;"><span class="tag tag-green">HIGHEST PRIORITY</span></div>
+</div>
+<div style="padding:1rem;border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;">
+<div class="bold" style="font-size:0.85rem;">2. Indoor Pickleball Balls</div>
+<div style="font-size:0.75rem;color:var(--muted);margin:0.3rem 0;">+57.35% growth (180d), 25-30K units</div>
+<div style="font-size:0.78rem;">Fastest-growing ball sub-niche. Not in current SKU plan. Consider Year 1 Q4 SKU addition — indoor ball at $14.99 (6-pack) would capture this growing demand with same manufacturing relationship.</div>
+<div style="margin-top:0.5rem;"><span class="tag tag-green">FUTURE SKU — YEAR 1</span></div>
+</div>
+<div style="padding:1rem;border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;">
+<div class="bold" style="font-size:0.85rem;">3. Quiet/Foam Pickleball Balls</div>
+<div style="font-size:0.75rem;color:var(--muted);margin:0.3rem 0;">+16.35% growth (180d), 60K searches</div>
+<div style="font-size:0.78rem;">Neighborhood-friendly play is a growing use case. Kestrel's COSMO listing should address "low-noise neighborhood practice" in Activity Intent nodes even if this isn't a separate SKU.</div>
+<div style="margin-top:0.5rem;"><span class="tag tag-blue">LISTING OPTIMIZATION</span></div>
+</div>
+<div style="padding:1rem;border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:8px;">
+<div class="bold" style="font-size:0.85rem;">4. Apex Brand Erosion</div>
+<div style="font-size:0.75rem;color:var(--muted);margin:0.3rem 0;">"a40" down -38.46%, Apex branded -68.78% (90d)</div>
+<div style="font-size:0.78rem;">Shoppers actively diversifying away from Apex. PAT campaigns targeting Apex ASINs will capture switching behavior. Use "pickleball ball alternative" and "better than A-40" messaging in ads.</div>
+<div style="margin-top:0.5rem;"><span class="tag tag-orange">CONQUEST PRIORITY</span></div>
+</div>
+<div style="padding:1rem;border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;">
+<div class="bold" style="font-size:0.85rem;">5. Dinkly (Rotomolded Competitor)</div>
+<div style="font-size:0.75rem;color:var(--muted);margin:0.3rem 0;">37K clicks, BSR #5, 227 reviews, $10.10</div>
+<div style="font-size:0.78rem;">Direct rotomolded competitor at $2.53/ball. Launched Oct 2024. Lower price but fewer reviews, no variation family, no brand credibility. Kestrel differentiates with: USAP cert, 5-SKU variation family, brand heritage, S&S.</div>
+<div style="margin-top:0.5rem;"><span class="tag tag-red">MONITOR CLOSELY</span></div>
+</div>
+<div style="padding:1rem;border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:8px;">
+<div class="bold" style="font-size:0.85rem;">6. Bundle Opportunities</div>
+<div style="font-size:0.75rem;color:var(--muted);margin:0.3rem 0;">Ball holder 4.79% CVR, Ball tube 5.17% CVR</div>
+<div style="font-size:0.78rem;">POE data shows high purchase rates for accessories that pair with balls. Virtual Bundle (12-pack + mesh bag) for FBT displacement. Consider sourcing a branded ball tube as an accessory SKU.</div>
+<div style="margin-top:0.5rem;"><span class="tag tag-purple">VIRTUAL BUNDLE</span></div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-title">Summit Pro K1 — The Real Competitive Threat</div>
+<div class="card-sub">Summit, not Apex, is Kestrel's primary direct competitor based on positioning and growth.</div>
+<table>
+<thead><tr><th></th><th>Summit Pro K1</th><th>Kestrel (Projected)</th><th>Kestrel Advantage</th></tr></thead>
+<tbody>
+<tr><td>Construction</td><td>Two-piece welded</td><td>Rotomolded seamless</td><td class="pos bold">Superior — no seam to crack</td></tr>
+<tr><td>12-Pack Price</td><td>$21.73 (down from $28.35)</td><td>$24.99</td><td class="neg">Summit cheaper</td></tr>
+<tr><td>4-Pack Price</td><td>$10.11 (down from $13.87)</td><td>$12.99</td><td class="neg">Summit cheaper</td></tr>
+<tr><td>Reviews</td><td>2,592</td><td>0 (target 50 in 30d)</td><td class="neg">Major gap — review acceleration critical</td></tr>
+<tr><td>BSR</td><td>#2</td><td>N/A</td><td class="neg">Ranking required</td></tr>
+<tr><td>Clicks (360d)</td><td>318,949 (12+4 pack)</td><td>0</td><td>N/A</td></tr>
+<tr><td>Warranty</td><td>1-year no-crack</td><td>TBD</td><td class="pos">Match or exceed</td></tr>
+<tr><td>Pack Sizes</td><td>4, 12 only</td><td>4, 6, 12, 24, 100</td><td class="pos bold">5x SKU variety</td></tr>
+<tr><td>S&S</td><td>Unknown</td><td>Target 20% enrollment</td><td class="pos">Recurring revenue moat</td></tr>
+</tbody>
+</table>
+<div class="callout orange" style="margin-top:0.5rem;"><strong>Pricing alert:</strong> Summit has been aggressively cutting prices — from $28.35 (360d avg) to $21.73 (90d) for the 12-pack and from $13.87 to $10.11 for the 4-pack. This is a 23-27% price reduction. Kestrel at $24.99 and $12.99 must justify the premium through rotomolded superiority, USAP cert, and pack-size variety.</div>
+</div>
+</div>
+
+<!-- ========== TOP SEARCH TERMS TAB (inserted) ========== -->
+<div class="tab-content" id="tab-searchterms">
+<div class="card">
+<div class="card-title">Top Search Terms — Week of March 29 - April 4, 2026</div>
+<div class="card-sub">Amazon Brand Analytics Top Search Terms report. Shows search frequency rank, top 3 clicked brands, top 3 clicked products with click share and conversion share. 52 terms tracked.</div>
+<table>
+<thead><tr><th>Search Term</th><th>Freq. Rank</th><th>Top Brand #1</th><th>Top Brand #2</th><th>Top Brand #3</th><th>#1 Click Share</th><th>#1 Conv Share</th><th>#2 Click Share</th><th>#2 Conv Share</th><th>Signal</th></tr></thead>
+<tbody>
+<tr class="hl"><td class="bold">pickleball balls</td><td>5,372</td><td>Apex</td><td>Summit</td><td>AILANFEI</td><td>32.47%</td><td>9.02%</td><td>14.51%</td><td class="pos bold">7.73%</td><td><span class="tag tag-green">HEAD TERM</span></td></tr>
+<tr><td class="bold">apex a-40 pickleball balls</td><td>36,660</td><td>Apex</td><td>Summit</td><td>SONICORE</td><td>48.84%</td><td>26.38%</td><td>18.25%</td><td>13.19%</td><td><span class="tag tag-orange">CONQUEST</span></td></tr>
+<tr><td class="bold">outdoor pickleball balls</td><td>45,424</td><td>Apex</td><td>Summit</td><td>SONICORE</td><td>40.42%</td><td>11.49%</td><td>12.01%</td><td class="pos bold">8.24%</td><td><span class="tag tag-green">TARGET</span></td></tr>
+<tr><td>indoor pickleball balls</td><td>98,989</td><td>STRIKE</td><td>Apex</td><td>Nexus</td><td>21.2%</td><td>1.42%</td><td>13.3%</td><td class="pos bold">19.34%</td><td><span class="tag tag-blue">FUTURE SKU</span></td></tr>
+<tr><td class="bold">pickleball balls outdoor</td><td>127,804</td><td>Apex</td><td>Summit</td><td>SONICORE</td><td>50.47%</td><td>14.97%</td><td>6.52%</td><td>2.99%</td><td><span class="tag tag-green">TARGET</span></td></tr>
+<tr><td>summit pickleball balls</td><td>195,280</td><td>Summit</td><td></td><td>Apex</td><td>74.3%</td><td class="pos bold">51.16%</td><td>12.01%</td><td>8.14%</td><td><span class="tag tag-orange">CONQUEST PAT</span></td></tr>
+<tr><td>pickleball balls indoor outdoor</td><td>242,017</td><td>Apex</td><td>Summit</td><td>VOLT</td><td>62.89%</td><td>8.96%</td><td>6.87%</td><td>0.0%</td><td><span class="tag tag-green">TARGET</span></td></tr>
+<tr><td>apex pickleball balls</td><td>250,039</td><td>Apex</td><td>Summit</td><td>SONICORE</td><td>47.16%</td><td>17.74%</td><td>20.57%</td><td>8.06%</td><td><span class="tag tag-orange">CONQUEST</span></td></tr>
+<tr><td>pickleball balls indoor</td><td>302,487</td><td>Apex</td><td>Nexus</td><td>STRIKE</td><td>18.8%</td><td class="pos bold">25.33%</td><td>12.39%</td><td>0.0%</td><td><span class="tag tag-blue">FUTURE SKU</span></td></tr>
+<tr><td class="bold">quiet pickleball balls</td><td>307,820</td><td>Tarutaru</td><td>Apex</td><td>STRIKE</td><td>32.61%</td><td>0.0%</td><td>14.78%</td><td class="pos bold">24.59%</td><td><span class="tag tag-blue">NICHE</span></td></tr>
+<tr><td>glow in the dark pickleball balls</td><td>343,138</td><td>Amoswiz</td><td>Apex</td><td>AILANFEI</td><td>50.24%</td><td>16.22%</td><td>26.57%</td><td>16.22%</td><td><span class="tag tag-purple">DECLINING</span></td></tr>
+<tr><td class="bold">pickleball outdoor balls</td><td>385,369</td><td>Apex</td><td>Summit</td><td class="bold" style="color:var(--brand)">Dinkly</td><td>43.78%</td><td>15.52%</td><td>17.3%</td><td>12.07%</td><td><span class="tag tag-red">DINKLY #3!</span></td></tr>
+<tr><td class="bold">outdoor pickleball balls durable</td><td>493,632</td><td class="bold" style="color:var(--blue)">Summit</td><td>Apex</td><td>SONICORE</td><td class="pos bold">40.69%</td><td>7.55%</td><td>15.86%</td><td>11.32%</td><td><span class="tag tag-red">SUMMIT #1</span></td></tr>
+<tr><td>tournament official pickleball balls</td><td>1,502,133</td><td>Apex</td><td>Summit</td><td>AILANFEI</td><td>43.75%</td><td>7.69%</td><td>12.5%</td><td>7.69%</td><td><span class="tag tag-green">TARGET</span></td></tr>
+<tr><td>lifetime pro 48 pickleball balls</td><td>2,293,629</td><td>Summit</td><td>Srikel</td><td>Apex</td><td>54.84%</td><td>0.0%</td><td>22.58%</td><td>0.0%</td><td><span class="tag tag-orange">SRIKEL ROTO</span></td></tr>
+<tr><td>pro pickleball balls</td><td>2,793,973</td><td>Summit</td><td>Apex</td><td>Srikel</td><td>44.0%</td><td>0.0%</td><td>32.0%</td><td class="pos bold">25.0%</td><td><span class="tag tag-green">TARGET</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="grid-2">
+<div class="card">
+<div class="card-title">Key Conversion Insights</div>
+<div class="callout green"><strong>Summit converts better than Apex on head terms.</strong> On "pickleball balls" (rank 5,372), Summit has 14.51% click share but 7.73% conversion share — meaning when shoppers click Summit, they buy at a higher rate than when they click Apex (9.02% conv on 32.47% clicks). This validates that crack-resistant positioning converts.</div>
+<div class="callout orange"><strong>SONICORE is a new threat.</strong> Appearing as top brand #3 on 6+ search terms (outdoor pickleball balls, pickleball balls outdoor, etc.). Monitor this brand — likely a new Chinese entrant gaining traction through aggressive PPC or pricing.</div>
+<div class="callout red"><strong>Dinkly appearing in top 3 for "pickleball outdoor balls."</strong> The rotomolded competitor is already ranking for key search terms. Kestrel must launch before Dinkly builds more review momentum.</div>
+</div>
+<div class="card">
+<div class="card-title">Kestrel PPC Keyword Priority Matrix</div>
+<table>
+<thead><tr><th>Priority</th><th>Keyword</th><th>Match Type</th><th>Rationale</th></tr></thead>
+<tbody>
+<tr><td><span class="tag tag-green">P1</span></td><td>pickleball balls</td><td>Exact</td><td>Head term — must rank</td></tr>
+<tr><td><span class="tag tag-green">P1</span></td><td>outdoor pickleball balls</td><td>Exact</td><td>High intent, 45K rank</td></tr>
+<tr><td><span class="tag tag-green">P1</span></td><td>pickleball balls outdoor</td><td>Exact</td><td>Variant of above</td></tr>
+<tr><td><span class="tag tag-green">P1</span></td><td>outdoor pickleball balls durable</td><td>Exact</td><td>Summit #1 — conquest</td></tr>
+<tr><td><span class="tag tag-orange">P2</span></td><td>tournament official pickleball balls</td><td>Exact</td><td>USAP cert differentiator</td></tr>
+<tr><td><span class="tag tag-orange">P2</span></td><td>pro pickleball balls</td><td>Exact</td><td>High conversion (25%)</td></tr>
+<tr><td><span class="tag tag-orange">P2</span></td><td>pickleball outdoor balls</td><td>Exact</td><td>Dinkly appearing — defend</td></tr>
+<tr><td><span class="tag tag-purple">PAT</span></td><td>summit pickleball balls</td><td>Product Target</td><td>74% click → 51% conv target</td></tr>
+<tr><td><span class="tag tag-purple">PAT</span></td><td>apex a-40 pickleball balls</td><td>Product Target</td><td>Conquest declining brand</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<div class="card-title">Sponsored Prompts Strategy (Rufus AI Ad Placements)</div>
+<div class="card-sub">Amazon's new Sponsored Prompts (Nov 2025 beta) generate AI-powered guiding questions within Rufus conversations, charged via standard CPC.</div>
+<div class="grid-3">
+<div style="padding:0.75rem;border:1px solid var(--border);border-radius:8px;">
+<div class="bold" style="font-size:0.82rem;">Prompt-Ready Bullets</div>
+<div style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem;">Structure bullets as Q&A. Example: "PLAYS IN ALL WEATHER" triggers prompt: "Is it good for cold weather?"</div>
+</div>
+<div style="padding:0.75rem;border:1px solid var(--border);border-radius:8px;">
+<div class="bold" style="font-size:0.82rem;">A+ Content as FAQ</div>
+<div style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem;">Comparison modules trigger prompts like "How does this compare to Apex A-40?" No setup required.</div>
+</div>
+<div style="padding:0.75rem;border:1px solid var(--border);border-radius:8px;">
+<div class="bold" style="font-size:0.82rem;">Auto-Enrolled</div>
+<div style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem;">All SP/SB campaigns automatically enrolled. Cost = standard CPC. PPC budget now funds AI conversational ads.</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">Kestrel | POE & SQP Market Intelligence | Data: Amazon Product Opportunity Explorer + ASIN Explorer + Top Search Terms | April 8, 2026 | 8 CSV exports, 1,000+ ASINs, 16 niches, 52 search terms</div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById('tab-'+t.dataset.tab).classList.add('active')})});
+
+// Price vs Reviews scatter
+new Chart(document.getElementById('priceReviewChart'),{type:'bubble',data:{datasets:[
+{label:'Apex',data:[{x:25046,y:38.14,r:25},{x:25046,y:16.5,r:20},{x:25046,y:29.66,r:12},{x:25046,y:114.19,r:8},{x:25046,y:138.92,r:8},{x:2824,y:40.8,r:7}],backgroundColor:'rgba(239,68,68,0.3)',borderColor:'#ef4444',borderWidth:2},
+{label:'Summit',data:[{x:2592,y:21.73,r:18},{x:2592,y:10.11,r:16}],backgroundColor:'rgba(59,130,246,0.3)',borderColor:'#3b82f6',borderWidth:2},
+{label:'Dinkly (Rotomolded)',data:[{x:227,y:10.1,r:10}],backgroundColor:'rgba(168,85,247,0.4)',borderColor:'#8b5cf6',borderWidth:2},
+{label:'cyclotron',data:[{x:654,y:11.89,r:12}],backgroundColor:'rgba(34,197,94,0.3)',borderColor:'#22c55e',borderWidth:2},
+{label:'Others',data:[{x:859,y:25.46,r:7},{x:1361,y:11.65,r:9},{x:584,y:24.11,r:8},{x:236,y:20.85,r:8},{x:417,y:28.6,r:7},{x:80,y:14.23,r:6}],backgroundColor:'rgba(148,163,184,0.2)',borderColor:'#94a3b8',borderWidth:1},
+{label:'Kestrel Target Zone',data:[{x:50,y:24.99,r:15}],backgroundColor:'rgba(249,115,22,0.4)',borderColor:'#f97316',borderWidth:3}
+]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{title:{display:true,text:'Total Reviews'},type:'logarithmic',grid:{color:'#f1f5f9'}},y:{title:{display:true,text:'Price (90d avg)'},grid:{color:'#f1f5f9'},min:0,max:150}},plugins:{legend:{labels:{font:{size:10}}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw.x.toLocaleString()} reviews, $${c.raw.y}`}}}}});
+
+// Seasonality chart
+const niches=['pickleball balls','outdoor balls','indoor balls','bulk pickleballs','quiet balls','a40 balls','glow dark','apex a-40'];
+const g180=[7.89,-17.37,57.35,100.41,16.35,-38.46,-30.39,137.75];
+const g90=[-46.96,-14.49,-23.24,39.39,-1.47,-68.78,-45.05,11.81];
+new Chart(document.getElementById('seasonChart'),{type:'bar',data:{labels:niches,datasets:[
+{label:'180-day growth',data:g180,backgroundColor:g180.map(v=>v>0?'rgba(34,197,94,0.4)':'rgba(239,68,68,0.3)'),borderColor:g180.map(v=>v>0?'#22c55e':'#ef4444'),borderWidth:1},
+{label:'90-day growth (seasonal)',data:g90,backgroundColor:g90.map(v=>v>0?'rgba(59,130,246,0.4)':'rgba(245,158,11,0.3)'),borderColor:g90.map(v=>v>0?'#3b82f6':'#f59e0b'),borderWidth:1}
+]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{ticks:{callback:v=>v+'%'},grid:{color:'#f1f5f9'},min:-80,max:150},y:{grid:{display:false}}},plugins:{legend:{labels:{font:{size:11}}}}}});
+</script>
+</body>
+</html>
