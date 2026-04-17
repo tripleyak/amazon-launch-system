@@ -1,4 +1,4 @@
-# Pickleball Launch Command Center — Public Demo
+# Amazon Launch Command Center — Public Demo
 
 An interactive Amazon product launch intelligence package built around a fictional pickleball brand (**Kestrel**). All brands, people, and specific figures have been anonymized or lightly perturbed; this is a **structural and methodological showcase**, not a real launch plan.
 
