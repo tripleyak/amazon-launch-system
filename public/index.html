@@ -575,17 +575,23 @@ em{font-style:italic;color:var(--court)}
 
 /* ──────────────────────────── RESPONSIVE ──────────────────────────── */
 @media(max-width:980px){
+  html,body{overflow-x:hidden}
+  body{font-size:15px}
   .chrome{padding:12px 16px}
   .chrome .right{gap:14px;font-size:10px}
-  section{padding:72px 20px}
-  .hero{padding:80px 20px 40px;min-height:auto}
-  .hero .core{grid-template-columns:1fr;gap:40px}
-  .hero-ball-scene{max-width:260px;margin:0 auto}
-  .hero-tag.t1{right:0}
-  .hero-tag.t2{right:-4%}
-  .hero-tag.t3{right:0}
-  .hero-tag.t4{left:0}
-  .hero-title h1{font-size:clamp(52px,13vw,96px);line-height:1.05}
+  section{padding:72px 18px}
+  .monopoly,.thesis,.seam,.flywheel-sec,.timeline-sec,.numbers,.blitz,.cosmo,.curve-sec,.risk,.final{padding:80px 18px}
+  .gap-section{padding:80px 18px}
+  .hero{padding:76px 18px 32px;min-height:auto}
+  .hero .core{grid-template-columns:1fr;gap:32px}
+  .hero-ball-scene{max-width:240px;margin:0 auto}
+  .hero-tag{font-size:9px;padding:5px 8px}
+  .hero-tag .n{font-size:12px}
+  .hero-tag.t1{top:0;right:0}
+  .hero-tag.t2{top:32%;right:0}
+  .hero-tag.t3{bottom:8%;right:0}
+  .hero-tag.t4{bottom:-8%;left:0}
+  .hero-title h1{font-size:clamp(48px,12vw,84px);line-height:1.04}
   .hero-sub{grid-template-columns:1fr;gap:32px}
   .hero-sub .stat-tile{text-align:left}
   .hero-bottom{grid-template-columns:repeat(2,1fr);gap:20px}
@@ -597,9 +603,12 @@ em{font-style:italic;color:var(--court)}
   .thesis .claims{grid-template-columns:1fr}
   .claim{border-right:none;border-bottom:1px solid var(--rule);min-height:0}
   .claim:last-child{border-bottom:none}
-  .seam .grid{grid-template-columns:1fr;gap:32px}
+  .seam .grid{grid-template-columns:1fr;gap:24px}
   .seam .stats-row{grid-template-columns:repeat(2,1fr)!important}
-  .ball-compare{max-width:280px;margin:0 auto}
+  .seam .copy h3{font-size:30px}
+  .seam .copy p{font-size:15px}
+  .seam .stats-row .stat .n{font-size:40px}
+  .ball-compare{max-width:240px;margin:0 auto}
   /* Flywheel mobile: stack + shrink wheel + rearrange nodes w/ smaller bubbles */
   .fw-stage{grid-template-columns:1fr;gap:48px}
   .fw-wheel{max-width:380px}
@@ -624,10 +633,10 @@ em{font-style:italic;color:var(--court)}
   .fw-copy .pill{padding:7px 11px;font-size:10px}
   .tl-phases{grid-template-columns:1fr}
   .num-grid{grid-template-columns:1fr}
-  .num-cell{min-height:160px;padding:28px 24px}
+  .num-cell{min-height:140px;padding:24px 20px}
   .num-cell.feat{grid-row:span 1}
-  .num-cell.feat .val{font-size:clamp(56px,14vw,96px)}
-  .num-cell .val{font-size:clamp(38px,10vw,56px)}
+  .num-cell.feat .val{font-size:clamp(52px,13vw,86px)}
+  .num-cell .val{font-size:clamp(34px,9vw,48px)}
   .blitz-stats{grid-template-columns:repeat(2,1fr)}
   .creator-swarm{height:340px;padding:24px}
   .creator-swarm .headline .big{font-size:26px}
@@ -641,11 +650,16 @@ em{font-style:italic;color:var(--court)}
   .footer{flex-direction:column;gap:16px;text-align:center;padding:40px 20px}
   .footer .colophon{text-align:center}
   .brand-detail{grid-template-columns:1fr}
-  .price-map{padding:28px 20px 20px;overflow-x:auto}
+  .price-map{padding:24px 16px 20px;overflow:visible}
   .price-map .map-header{flex-direction:column;align-items:flex-start;gap:6px}
-  .price-map .map-header h3{font-size:22px}
-  .price-scale{height:420px;min-width:480px}
-  .price-map .map-inner{min-width:520px;overflow-x:auto}
+  .price-map .map-header h3{font-size:20px}
+  .price-scale{height:380px;min-width:0}
+  .price-map .map-inner{min-width:0;overflow:visible}
+  .brand-dot .name{font-size:8px}
+  .brand-dot .bubble{font-size:9px}
+  .price-scale .zone.vacant .big{font-size:16px}
+  .price-scale .zone.vacant .tiny{font-size:10px}
+  .price-scale .ylabel,.price-scale .xlabel{font-size:9px}
   /* Tweaks mobile */
   .tweaks{bottom:12px;right:12px;left:12px;width:auto;max-width:none;padding:16px}
   .tweaks .tw-row{flex-direction:column;align-items:flex-start;gap:8px;padding:10px 0}
@@ -655,22 +669,57 @@ em{font-style:italic;color:var(--court)}
   .kg-node{font-size:10px;padding:6px 10px}
 }
 @media(max-width:560px){
+  section{padding:60px 14px}
+  .monopoly,.thesis,.seam,.flywheel-sec,.timeline-sec,.numbers,.blitz,.cosmo,.curve-sec,.risk,.final,.gap-section{padding:64px 14px}
+  .hero{padding:64px 14px 28px}
+  .chrome{padding:10px 14px}
   .chrome .right a{display:none}
   .chrome .right a:nth-child(1),.chrome .right a:nth-child(3){display:inline}
   .hero-bottom{grid-template-columns:1fr}
-  .hero-title h1{font-size:56px;line-height:1.04}
-  .hb-cell .num{font-size:36px}
+  .hero-title h1{font-size:clamp(42px,11vw,56px);line-height:1.04}
+  .hero-ball-scene{max-width:200px}
+  .hb-cell .num{font-size:32px}
+  .hero-sub .stat-tile .val{font-size:44px}
+  .topline{font-size:10px;padding:12px 14px}
+  .stamp{font-size:10px!important;padding:5px 10px!important}
+  h2{font-size:clamp(32px,8vw,48px)!important}
+  h3{font-size:clamp(20px,5.5vw,28px)!important}
+  .claim{padding:28px 20px 28px}
+  .claim .head{font-size:24px}
   .blitz-stats{grid-template-columns:1fr}
   .share-legend{grid-template-columns:1fr}
-  .fw-wheel{max-width:320px}
-  @keyframes fwOrbit{from{transform:rotate(0deg) translateY(-128px)}to{transform:rotate(360deg) translateY(-128px)}}
-  .fw-node .bubble{width:48px;height:48px;font-size:8px}
+  .share-grid{grid-template-columns:repeat(10,1fr);aspect-ratio:10/12}
+  .fw-wheel{max-width:300px}
+  @keyframes fwOrbit{from{transform:rotate(0deg) translateY(-120px)}to{transform:rotate(360deg) translateY(-120px)}}
+  .fw-node .bubble{width:44px;height:44px;font-size:8px}
+  .fw-node .step{width:16px;height:16px;font-size:8px}
   .fw-node .title{display:none}
   .fw-node .stat{display:none}
+  .fw-center .ring{width:96px;height:96px}
+  .fw-center .name{font-size:22px}
   .fw-copy h3{font-size:22px}
+  .fw-copy p{font-size:15px}
   .fw-copy .metrics{grid-template-columns:1fr 1fr}
   .fw-copy .metric:nth-child(3){display:none}
-  .ticker-track{animation-duration:40s;font-size:11px;gap:32px}
+  .fw-copy .metric .mv{font-size:18px}
+  .ticker{padding:12px 0}
+  .ticker-track{animation-duration:40s;font-size:10px;gap:28px}
+  .price-map{padding:20px 12px 16px}
+  .price-scale{height:320px}
+  .brand-dot .name{font-size:7px;max-width:60px;text-align:center;white-space:normal;line-height:1.1}
+  .brand-dot .bubble{font-size:8px}
+  .brand-dot .bubble{width:36px!important;height:36px!important}
+  .num-cell .val{font-size:clamp(28px,9vw,40px)}
+  .num-cell.feat .val{font-size:clamp(44px,12vw,64px)}
+  .rufus-chat,.cosmo-graph{padding:18px}
+  .cosmo-graph .kg{height:360px}
+  .kg-node{font-size:9px;padding:5px 8px}
+  .rr{padding:18px 16px}
+  .final h2{font-size:clamp(42px,11vw,64px)}
+  .final p{font-size:16px}
+  .manifesto .mf .txt{font-size:17px}
+  .footer{padding:36px 14px;font-size:10px}
+  .ball-compare{max-width:200px}
 }
 </style>
 </head>
